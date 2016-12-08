@@ -2,8 +2,9 @@
     -fx-background-color: rgb(255,43,43);
     background-color: rgb(255,43,43);
 }
-.jfx-progress-bar .track .bar{
-    background-color: rgb(255,43,43);
+.jfx-progress-bar .track {
+    color: rgb(255,43,43);
     -fx-background-color: rgb(255,43,43);
-    
+    -fx-background-fills: rgb(255,43,43);
+
 }

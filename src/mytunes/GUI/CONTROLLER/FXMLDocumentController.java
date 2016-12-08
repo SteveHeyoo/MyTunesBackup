@@ -215,7 +215,7 @@ public class FXMLDocumentController implements Initializable
         showNewEditPlaylistDialog(null);
 
     }
-
+    @FXML
     private void handleDeletePlayList(ActionEvent event)
     {
         Playlist playlist = tblPlaylist.getSelectionModel().getSelectedItem();
@@ -242,7 +242,7 @@ public class FXMLDocumentController implements Initializable
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    @FXML
     private void handleShowPlaylistSongs(MouseEvent event)
     {
         Playlist playlist = tblPlaylist.getSelectionModel().getSelectedItem();
@@ -301,7 +301,7 @@ public class FXMLDocumentController implements Initializable
         }
         tblPlaylist.getSelectionModel().clearAndSelect(plIndexNum);
     }
-
+    @FXML
     private void handleSongsOnPlaylistPlay(MouseEvent event)
     {
         currentSong = listPlaylistSong.getSelectionModel().getSelectedItem();
@@ -313,6 +313,7 @@ public class FXMLDocumentController implements Initializable
             model.setCurrentListControl(currentControlList);
             model.playSong(currentSong);
             model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue() / 100);
+            bindPlayerToGUI();
 
             //currentControlList = listPlaylistSong;
         }
@@ -364,6 +365,7 @@ public class FXMLDocumentController implements Initializable
         model.setCurrentListControl(currentControlList);
         model.playSongButtonClick();
         model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue() / 100);
+        bindPlayerToGUI();
 
         //btnPlaySong.setText("Pause");
     }
@@ -423,6 +425,7 @@ public class FXMLDocumentController implements Initializable
 
         model.pressNextButton();
         model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue() / 100);
+        bindPlayerToGUI();
 
     }
 
@@ -431,6 +434,7 @@ public class FXMLDocumentController implements Initializable
     {
         model.pressPreviousButton();
         model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue() / 100);
+        bindPlayerToGUI();
     }
 
     private void handleRadioReapetSong(ActionEvent event)
