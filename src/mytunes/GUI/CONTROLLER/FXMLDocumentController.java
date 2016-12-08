@@ -57,7 +57,6 @@ public class FXMLDocumentController implements Initializable
 
     private Model model;
 
-
     @FXML
     private TableView<Playlist> tblPlaylist;
     @FXML
@@ -83,7 +82,6 @@ public class FXMLDocumentController implements Initializable
 
     @FXML
     private TextField txtFieldSearch;
-
 
     @FXML
     private Slider volumeSlide;
@@ -157,7 +155,6 @@ public class FXMLDocumentController implements Initializable
         }
     }
 
-
     private void loadSongDataView(Song song) throws IOException
     {
         // Fetches primary stage and gets loader and loads FXML file to Parent
@@ -181,6 +178,7 @@ public class FXMLDocumentController implements Initializable
 
         stageSongEdit.show();
     }
+
     @FXML
     private void handleTblViewMouseClick(MouseEvent event)
     {
@@ -196,8 +194,9 @@ public class FXMLDocumentController implements Initializable
             bindPlayerToGUI();
 
         }
-        
+
     }
+
     @FXML
     private void handleTblViewSongsDelete(ActionEvent event)
     {
@@ -217,6 +216,7 @@ public class FXMLDocumentController implements Initializable
         showNewEditPlaylistDialog(null);
 
     }
+
     @FXML
     private void handleDeletePlayList(ActionEvent event)
     {
@@ -238,12 +238,12 @@ public class FXMLDocumentController implements Initializable
         try
         {
             loadSongDataView(song);
-        }
-        catch (IOException ex)
+        } catch (IOException ex)
         {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
     @FXML
     private void handleShowPlaylistSongs(MouseEvent event)
     {
@@ -253,8 +253,6 @@ public class FXMLDocumentController implements Initializable
         int playlistId = playlist.getId();
         if (playlist != null)
         {
-
-
 
             try
             {
@@ -267,7 +265,6 @@ public class FXMLDocumentController implements Initializable
             {
                 showAlert("UnsupportedAudioFileException", ex.getMessage());
             }
-
 
         }
 
@@ -303,6 +300,7 @@ public class FXMLDocumentController implements Initializable
         }
         tblPlaylist.getSelectionModel().clearAndSelect(plIndexNum);
     }
+
     @FXML
     private void handleSongsOnPlaylistPlay(MouseEvent event)
     {
@@ -321,6 +319,7 @@ public class FXMLDocumentController implements Initializable
         }
     }
 
+    @FXML
     private void handleSearch3(KeyEvent event)
     {
         String query = txtFieldSearch.getText().trim();
@@ -335,6 +334,7 @@ public class FXMLDocumentController implements Initializable
         }
         model.setSongs(searchResult);
     }
+
     @FXML
 
     private void handleMoveSongUp(ActionEvent event)
@@ -347,6 +347,7 @@ public class FXMLDocumentController implements Initializable
 
         }
     }
+
     @FXML
     private void handleMoveSongDown(ActionEvent event)
     {
@@ -361,7 +362,7 @@ public class FXMLDocumentController implements Initializable
 
     @FXML
     private void handlePlayButton(ActionEvent event)
-    {      
+    {
         model.setCurrentListControl(currentControlList);
         model.playSongButtonClick();
         model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue() / 100);
@@ -369,21 +370,17 @@ public class FXMLDocumentController implements Initializable
 
         try
         {
-            ListView<Song> playlist = (ListView)currentControlList;
-            model.setIndex(playlist.getSelectionModel().getSelectedIndex());
-            
-        }
-        catch(ClassCastException c)
-        {
-            TableView<Song> playlist = (TableView)currentControlList;
+            ListView<Song> playlist = (ListView) currentControlList;
             model.setIndex(playlist.getSelectionModel().getSelectedIndex());
 
+        } catch (ClassCastException c)
+        {
+            TableView<Song> playlist = (TableView) currentControlList;
+            model.setIndex(playlist.getSelectionModel().getSelectedIndex());
 
         }
         //btnPlaySong.setText("Pause");
     }
-
-    
 
     private void showNewEditPlaylistDialog(Playlist playlist) throws IOException
     {
@@ -429,8 +426,6 @@ public class FXMLDocumentController implements Initializable
 
         alert.showAndWait();
     }
-
-    
 
     @FXML
     private void handlePlayNextSong(ActionEvent event)
@@ -493,16 +488,14 @@ public class FXMLDocumentController implements Initializable
             {
                 super.bind(model.getmTPlayer().getMediaPlayer().currentTimeProperty());
                 progressbarDuration.maxWidthProperty().set(model.getmTPlayer().getMediaPlayer().getTotalDuration().toMillis());
-              //  progressbarDuration.maxWidthProperty().set(model.getmTPlayer().getMediaPlayer().getTotalDuration().toMillis());
+                //  progressbarDuration.maxWidthProperty().set(model.getmTPlayer().getMediaPlayer().getTotalDuration().toMillis());
             }
 
             @Override
             protected Number computeValue()
             {
-                System.out.println(model.getmTPlayer().getMediaPlayer().getTotalDuration().toMillis()/model.getmTPlayer().getMediaPlayer().getCurrentTime().toMillis());
-                
-                return (model.getmTPlayer().getMediaPlayer().getCurrentTime().toMillis()/model.getmTPlayer().getMediaPlayer().getTotalDuration().toMillis());
-                
+
+                return (model.getmTPlayer().getMediaPlayer().getCurrentTime().toMillis() / model.getmTPlayer().getMediaPlayer().getTotalDuration().toMillis());
 
             }
         });
@@ -517,7 +510,6 @@ public class FXMLDocumentController implements Initializable
     private void handleQuitProgram(ActionEvent event)
     {
     }
-
 
     @FXML
     private void handleDeleteSongInPlaylist(ActionEvent event)

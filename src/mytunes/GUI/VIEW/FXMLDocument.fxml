@@ -57,7 +57,7 @@
             <Font name="System Bold" size="15.0" />
          </font>
       </Text>
-      <TextField fx:id="txtFieldSearch" layoutX="834.0" layoutY="20.0" prefHeight="31.0" prefWidth="244.0" />
+      <TextField fx:id="txtFieldSearch" onKeyReleased="#handleSearch3" layoutX="834.0" layoutY="20.0" prefHeight="31.0" prefWidth="244.0" />
       <JFXButton layoutX="574.0" layoutY="221.0" onAction="#handleAddSongToPlaylist" prefHeight="73.0" prefWidth="78.0" ripplerFill="RED" text="«  " textFill="WHITE">
          <font>
             <Font size="32.0" />
@@ -79,7 +79,7 @@
             <Font name="System Bold" size="24.0" />
          </font>
       </Text>
-      <Text fill="WHITE" layoutX="786.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Filter:" wrappingWidth="47.6708984375">
+      <Text fill="WHITE" layoutX="786.0" layoutY="41.0"  strokeType="OUTSIDE" strokeWidth="0.0" text="Filter:" wrappingWidth="47.6708984375">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
