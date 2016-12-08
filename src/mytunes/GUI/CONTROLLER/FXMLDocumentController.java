@@ -90,7 +90,9 @@ public class FXMLDocumentController implements Initializable
 
     private Song currentSong;
     private Control currentControlList;
+    @FXML
     private Label lblDuration;
+    @FXML
     private JFXProgressBar progressbarDuration;
 
     public FXMLDocumentController()
@@ -499,10 +501,6 @@ public class FXMLDocumentController implements Initializable
     {
     }
 
-    @FXML
-    private void handleTblViewSongDelete(ActionEvent event)
-    {
-    }
 
     @FXML
     private void handleDeleteSongInPlaylist(ActionEvent event)

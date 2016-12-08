@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXProgressBar?>
 <?import com.jfoenix.controls.JFXSlider?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" prefHeight="660.0" prefWidth="1110.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mytunes.GUI.CONTROLLER.FXMLDocumentController">
+<AnchorPane id="AnchorPane" prefHeight="660.0" prefWidth="1110.0" stylesheets="@slider.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mytunes.GUI.CONTROLLER.FXMLDocumentController">
    <children>
       <ImageView fitHeight="660.0" fitWidth="1110.0" pickOnBounds="true">
          <image>
@@ -31,9 +32,9 @@
       <JFXButton layoutX="25.0" layoutY="608.0" onAction="#handleNewPlaylist" ripplerFill="RED" text="New" textFill="WHITE" />
       <JFXButton layoutX="90.0" layoutY="608.0" onAction="#handleEditPlaylist" ripplerFill="RED" text="Edit" textFill="WHITE" />
       <JFXButton layoutX="155.0" layoutY="608.0" onAction="#handlePlaylistDelete" ripplerFill="RED" text="Delete" textFill="WHITE" />
-      <JFXButton layoutX="155.0" layoutY="20.0" onAction="#handlePlayNextSong" ripplerFill="RED" text="Next" textFill="WHITE" />
-      <JFXButton layoutX="99.0" layoutY="20.0" onAction="#handlePlayButton" ripplerFill="RED" text="Play" textFill="WHITE" />
-      <JFXButton layoutX="14.0" layoutY="20.0" onAction="#handlePlayPreviousSong" ripplerFill="RED" text="Previous" textFill="WHITE" />
+      <JFXButton layoutX="611.0" layoutY="62.0" onAction="#handlePlayNextSong" ripplerFill="RED" text="Next" textFill="WHITE" />
+      <JFXButton layoutX="435.0" layoutY="62.0" onAction="#handlePlayButton" ripplerFill="RED" text="Play" textFill="WHITE" />
+      <JFXButton layoutX="258.0" layoutY="60.0" onAction="#handlePlayPreviousSong" ripplerFill="RED" text="Previous" textFill="WHITE" />
       <TableView fx:id="tblPlaylist" layoutX="25.0" layoutY="173.0" prefHeight="430.0" prefWidth="293.0">
         <columns>
           <TableColumn fx:id="columnPlaylistName" prefWidth="75.0" text="Name" />
@@ -50,7 +51,7 @@
             <TableColumn fx:id="columnTime" prefWidth="75.0" text="Time" />
         </columns>
       </TableView>
-      <Text fill="WHITE" layoutX="225.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Volume" wrappingWidth="77.6708984375">
+      <Text fill="WHITE" layoutX="14.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Volume" wrappingWidth="77.6708984375">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
@@ -67,7 +68,7 @@
             <Font name="System Bold" size="24.0" />
          </font>
       </Text>
-      <Text fill="WHITE" layoutX="360.0" layoutY="131.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Songs on playlist" wrappingWidth="187.00000762939453">
+      <Text fill="WHITE" layoutX="360.0" layoutY="162.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Playlist songs" wrappingWidth="187.00000762939453">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>
@@ -82,10 +83,11 @@
             <Font name="System Bold" size="15.0" />
          </font>
       </Text>
-      <JFXSlider fx:id="volumeSlide" layoutX="225.0" layoutY="51.0">
-         <effect>
-            <ColorAdjust contrast="0.42" hue="1.0" saturation="-1.0" />
-         </effect>
+      <JFXProgressBar fx:id="progressbarDuration" layoutX="358.0" layoutY="44.0" progress="0.0" scaleX="2.0" />
+      <JFXSlider fx:id="volumeSlide" layoutX="14.0" layoutY="38.0">
       </JFXSlider>
+      <Label fx:id="lblDuration" layoutX="440.0" layoutY="18.0" textFill="WHITE" />
+      
    </children>
+   
 </AnchorPane>
