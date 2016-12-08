@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Bloom?>
+<?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="136.0" prefWidth="500.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.60">
+   <children>
+      <ImageView fitHeight="140.0" fitWidth="500.0" pickOnBounds="true">
+         <image>
+            <Image url="@../../../../FXImages/BG_GUI.png" />
+         </image>
+      </ImageView>
+      <Text fill="WHITE" layoutX="14.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New/Edit Playlist">
+         <effect>
+            <Bloom />
+         </effect>
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Text>
+      <TextField layoutX="142.0" layoutY="55.0" prefHeight="31.0" prefWidth="271.0">
+         <effect>
+            <InnerShadow />
+         </effect>
+      </TextField>
+      <JFXButton layoutX="298.0" layoutY="95.0" ripplerFill="RED" text="Cancel" textFill="WHITE">
+         <effect>
+            <Bloom />
+         </effect>
+      </JFXButton>
+      <JFXButton layoutX="362.0" layoutY="95.0" ripplerFill="RED" text="Save" textFill="WHITE">
+         <effect>
+            <Bloom />
+         </effect>
+      </JFXButton>
+      <Text fill="WHITE" layoutX="82.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:">
+         <effect>
+            <Bloom />
+         </effect>
+      </Text>
+   </children>
+</AnchorPane>
