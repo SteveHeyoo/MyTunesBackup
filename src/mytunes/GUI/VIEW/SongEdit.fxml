@@ -10,8 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="308.0" prefWidth="488.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.60">
+<AnchorPane id="AnchorPane" prefHeight="308.0" prefWidth="488.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ImageView fitHeight="308.0" fitWidth="491.0" pickOnBounds="true">
          <image>
@@ -19,9 +18,6 @@
          </image>
       </ImageView>
       <Text fill="WHITE" layoutX="14.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Song information:">
-         <effect>
-            <Bloom />
-         </effect>
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
@@ -51,22 +47,22 @@
             <Bloom />
          </effect>
       </Text>
-      <TextField layoutX="91.0" layoutY="48.0" prefHeight="31.0" prefWidth="300.0" />
-      <TextField layoutX="91.0" layoutY="89.0" prefHeight="31.0" prefWidth="300.0" />
-      <TextField layoutX="91.0" layoutY="185.0" prefHeight="31.0" prefWidth="300.0" />
-      <TextField layoutX="91.0" layoutY="223.0" prefHeight="31.0" prefWidth="300.0" />
+      <TextField fx:id="txtTitle" layoutX="91.0" layoutY="48.0" prefHeight="31.0" prefWidth="300.0" />
+      <TextField fx:id="txtArtist" layoutX="91.0" layoutY="89.0" prefHeight="31.0" prefWidth="300.0" />
+      <TextField fx:id="txtTime" editable="false" layoutX="91.0" layoutY="185.0" prefHeight="31.0" prefWidth="300.0" visible="false" />
+      <TextField fx:id="txtFile" layoutX="91.0" layoutY="223.0" prefHeight="31.0" prefWidth="300.0" />
       <ComboBox layoutX="91.0" layoutY="139.0" prefWidth="150.0" />
-      <JFXButton layoutX="327.0" layoutY="268.0" ripplerFill="RED" text="Cancel" textFill="WHITE">
+      <JFXButton layoutX="327.0" layoutY="268.0" onAction="#handleBtnCancel" ripplerFill="RED" text="Cancel" textFill="WHITE">
          <effect>
             <Bloom />
          </effect>
       </JFXButton>
-      <JFXButton layoutX="268.0" layoutY="268.0" ripplerFill="RED" text="Save" textFill="WHITE">
+      <JFXButton layoutX="268.0" layoutY="268.0" onAction="#handleSaveSong" ripplerFill="RED" text="Save" textFill="WHITE">
          <effect>
             <Bloom />
          </effect>
       </JFXButton>
-      <JFXButton layoutX="410.0" layoutY="223.0" ripplerFill="RED" text="Choose" textFill="WHITE">
+      <JFXButton layoutX="410.0" layoutY="223.0" onAction="#handleBtnChoose" ripplerFill="RED" text="Choose" textFill="WHITE">
          <effect>
             <Bloom />
          </effect>

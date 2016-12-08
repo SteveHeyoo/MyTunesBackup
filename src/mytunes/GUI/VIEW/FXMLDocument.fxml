@@ -16,105 +16,99 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="660.0" prefWidth="1110.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.60">
+<AnchorPane id="AnchorPane" prefHeight="660.0" prefWidth="1110.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ImageView fitHeight="660.0" fitWidth="1110.0" pickOnBounds="true">
          <image>
             <Image url="@BG_GUI.png" />
          </image>
       </ImageView>
-      <JFXButton layoutX="1013.0" layoutY="608.0" ripplerFill="RED" text="Close" textFill="WHITE">
+      <JFXButton layoutX="1013.0" layoutY="608.0" onAction="#handleQuitProgram" ripplerFill="RED" text="Close" textFill="WHITE">
          <effect>
             <Bloom />
          </effect>
       </JFXButton>
-      <JFXButton layoutX="736.0" layoutY="608.0" ripplerFill="RED" text="Edit" textFill="WHITE">
+      <JFXButton layoutX="736.0" layoutY="608.0" onAction="#handleSongEdit" ripplerFill="RED" text="Edit" textFill="WHITE">
          <effect>
             <Bloom />
          </effect>
       </JFXButton>
-      <JFXButton layoutX="1031.0" layoutY="20.0" ripplerFill="RED" textFill="WHITE">
+      <JFXButton layoutX="671.0" layoutY="608.0" onAction="#handleNewSong" ripplerFill="RED" text="New" textFill="WHITE">
          <effect>
             <Bloom />
          </effect>
       </JFXButton>
-      <JFXButton layoutX="671.0" layoutY="608.0" ripplerFill="RED" text="New" textFill="WHITE">
+      <JFXButton layoutX="801.0" layoutY="608.0" onAction="#handleTblViewSongDelete" ripplerFill="RED" text="Delete" textFill="WHITE">
          <effect>
             <Bloom />
          </effect>
       </JFXButton>
-      <JFXButton layoutX="801.0" layoutY="608.0" ripplerFill="RED" text="Delete" textFill="WHITE">
+      <JFXButton layoutX="360.0" layoutY="608.0" onAction="#handleMoveSongUp" ripplerFill="RED" text="⬆" textFill="WHITE">
          <effect>
             <Bloom />
          </effect>
       </JFXButton>
-      <JFXButton layoutX="360.0" layoutY="608.0" ripplerFill="RED" text="⬆" textFill="WHITE">
+      <JFXButton layoutX="401.0" layoutY="608.0" onAction="#handleMoveSongDown" ripplerFill="RED" text="⬇" textFill="WHITE">
          <effect>
             <Bloom />
          </effect>
       </JFXButton>
-      <JFXButton layoutX="401.0" layoutY="608.0" ripplerFill="RED" text="⬇" textFill="WHITE">
+      <JFXButton layoutX="490.0" layoutY="608.0" onAction="#handleDeleteSongInPlaylist" ripplerFill="RED" text="Delete" textFill="WHITE">
          <effect>
             <Bloom />
          </effect>
       </JFXButton>
-      <JFXButton layoutX="490.0" layoutY="608.0" ripplerFill="RED" text="Delete" textFill="WHITE">
+      <JFXButton layoutX="25.0" layoutY="608.0" onAction="#handleNewPlaylist" ripplerFill="RED" text="New" textFill="WHITE">
          <effect>
             <Bloom />
          </effect>
       </JFXButton>
-      <JFXButton layoutX="25.0" layoutY="608.0" ripplerFill="RED" textFill="WHITE">
+      <JFXButton layoutX="90.0" layoutY="608.0" onAction="#handleEditPlaylist" ripplerFill="RED" text="Edit" textFill="WHITE">
          <effect>
             <Bloom />
          </effect>
       </JFXButton>
-      <JFXButton layoutX="90.0" layoutY="608.0" ripplerFill="RED" textFill="WHITE">
+      <JFXButton layoutX="155.0" layoutY="608.0" onAction="#handlePlaylistDelete" ripplerFill="RED" text="Delete" textFill="WHITE">
          <effect>
             <Bloom />
          </effect>
       </JFXButton>
-      <JFXButton layoutX="155.0" layoutY="608.0" ripplerFill="RED" textFill="WHITE">
+      <JFXButton layoutX="155.0" layoutY="20.0" onAction="#handlePlayNextSong" ripplerFill="RED" text="Next" textFill="WHITE">
          <effect>
             <Bloom />
          </effect>
       </JFXButton>
-      <JFXButton layoutX="155.0" layoutY="20.0" ripplerFill="RED" text="Next" textFill="WHITE">
+      <JFXButton layoutX="99.0" layoutY="20.0" onAction="#handlePlayButton" ripplerFill="RED" text="Play" textFill="WHITE">
          <effect>
             <Bloom />
          </effect>
       </JFXButton>
-      <JFXButton layoutX="99.0" layoutY="20.0" ripplerFill="RED" text="Play" textFill="WHITE">
+      <JFXButton layoutX="14.0" layoutY="20.0" onAction="#handlePlayPreviousSong" ripplerFill="RED" text="Previous" textFill="WHITE">
          <effect>
             <Bloom />
          </effect>
       </JFXButton>
-      <JFXButton layoutX="14.0" layoutY="20.0" ripplerFill="RED" text="Previous" textFill="WHITE">
-         <effect>
-            <Bloom />
-         </effect>
-      </JFXButton>
-      <TableView layoutX="25.0" layoutY="173.0" prefHeight="430.0" prefWidth="293.0">
+      <TableView fx:id="tblPlaylist" layoutX="25.0" layoutY="173.0" prefHeight="430.0" prefWidth="293.0">
         <columns>
-          <TableColumn prefWidth="75.0" text="Name" />
-          <TableColumn prefWidth="74.0" text="Songs" />
-            <TableColumn prefWidth="76.0" text="Time" />
+          <TableColumn fx:id="columnPlaylistName" prefWidth="75.0" text="Name" />
+          <TableColumn fx:id="columnPlaylistNumberOfSongs" prefWidth="74.0" text="Songs" />
+            <TableColumn fx:id="columnPlaylistTotalDuration" prefWidth="76.0" text="Time" />
         </columns>
          <effect>
             <InnerShadow />
          </effect>
       </TableView>
-      <ListView layoutX="358.0" layoutY="173.0" prefHeight="430.0" prefWidth="200.0">
+      <ListView fx:id="listPlaylistSong" layoutX="358.0" layoutY="173.0" prefHeight="430.0" prefWidth="200.0">
          <effect>
             <InnerShadow />
          </effect>
       </ListView>
-      <TableView layoutX="671.0" layoutY="173.0" prefHeight="430.0" prefWidth="408.0">
+      <TableView fx:id="tblSong" layoutX="671.0" layoutY="173.0" prefHeight="430.0" prefWidth="408.0">
         <columns>
-          <TableColumn prefWidth="75.0" text="Title" />
-          <TableColumn prefWidth="75.0" text="Artist" />
-            <TableColumn prefWidth="75.0" text="Category" />
-            <TableColumn prefWidth="75.0" text="Time" />
+          <TableColumn fx:id="columnTitle" prefWidth="75.0" text="Title" />
+          <TableColumn fx:id="columnArtist" prefWidth="75.0" text="Artist" />
+            <TableColumn fx:id="columnCategory" prefWidth="75.0" text="Category" />
+            <TableColumn fx:id="columnTime" prefWidth="75.0" text="Time" />
         </columns>
          <effect>
             <InnerShadow />
@@ -128,8 +122,8 @@
             <Font name="System Bold" size="15.0" />
          </font>
       </Text>
-      <TextField layoutX="834.0" layoutY="20.0" />
-      <JFXButton layoutX="574.0" layoutY="221.0" prefHeight="73.0" prefWidth="78.0" ripplerFill="RED" text="«  " textFill="WHITE">
+      <TextField fx:id="txtFieldSearch" layoutX="834.0" layoutY="20.0" prefHeight="31.0" prefWidth="244.0" />
+      <JFXButton layoutX="574.0" layoutY="221.0" onAction="#handleAddSongToPlaylist" prefHeight="73.0" prefWidth="78.0" ripplerFill="RED" text="«  " textFill="WHITE">
          <effect>
             <Bloom />
          </effect>
@@ -137,27 +131,18 @@
             <Font size="32.0" />
          </font>
       </JFXButton>
-      <RadioButton layoutX="570.0" layoutY="350.0" mnemonicParsing="false" prefHeight="5.0" prefWidth="85.0" text="RadioButton" textFill="WHITE" />
+      <RadioButton layoutX="570.0" layoutY="350.0" mnemonicParsing="false" onAction="#handleRadioRepeatSong" prefHeight="5.0" prefWidth="85.0" text="Repeat" textFill="WHITE" />
       <Text fill="WHITE" layoutX="25.0" layoutY="162.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Playlists" wrappingWidth="200.00000174157321">
-         <effect>
-            <Bloom />
-         </effect>
          <font>
             <Font name="System Bold" size="24.0" />
          </font>
       </Text>
       <Text fill="WHITE" layoutX="360.0" layoutY="131.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Songs on playlist" wrappingWidth="187.00000762939453">
-         <effect>
-            <Bloom />
-         </effect>
          <font>
             <Font name="System Bold" size="24.0" />
          </font>
       </Text>
       <Text fill="WHITE" layoutX="671.0" layoutY="161.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Songs" wrappingWidth="77.6708984375">
-         <effect>
-            <Bloom />
-         </effect>
          <font>
             <Font name="System Bold" size="24.0" />
          </font>
@@ -170,7 +155,7 @@
             <Font name="System Bold" size="15.0" />
          </font>
       </Text>
-      <JFXSlider layoutX="225.0" layoutY="51.0">
+      <JFXSlider fx:id="volumeSlide" layoutX="225.0" layoutY="51.0">
          <effect>
             <ColorAdjust contrast="0.42" hue="1.0" saturation="-1.0" />
          </effect>
