@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Observable;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
@@ -28,7 +29,7 @@ import mytunes.GUI.CONTROLLER.FXMLDocumentController;
  *
  * @author Stefan-VpcEB3J1E
  */
-public class Model
+public class Model extends Observable
 {
 
     private static Model INSTANCE;
@@ -40,7 +41,7 @@ public class Model
     private int selectedIndex;
     private boolean runningDelay;
     private boolean playingSong;
-    
+
     private Song songPlaying;
     private Timeline timeline;
     private List<Song> currentList;
@@ -49,18 +50,18 @@ public class Model
     private int currentIndex;
     private List<Song> songsCleared;
     private boolean repeatSong;
-    
+
     private Model()
     {
         mMgr = new MusicManager();
         songs = FXCollections.observableArrayList();
         playlists = FXCollections.observableArrayList();
         songsByPlaylistId = FXCollections.observableArrayList();
+
         loadSongsAndPlaylists();
-       
-   
+
     }
-    
+
     public static Model getInstance()
     {
         if (INSTANCE == null)
@@ -76,7 +77,7 @@ public class Model
         song = mMgr.addSong(file);
         songs.add(song);
     }
-    
+
     private void loadSongsAndPlaylists()
     {
         try
@@ -85,241 +86,246 @@ public class Model
             songs.clear();
             playlists.addAll(mMgr.getAllPlayLists());
             songs.addAll(mMgr.getAllSongs());
-        } 
-        catch (IOException ex)
+        } catch (IOException ex)
         {
             ex.printStackTrace();
         } catch (UnsupportedAudioFileException ex)
         {
-           ex.printStackTrace();
+            ex.printStackTrace();
         }
     }
-    
+
     /**
      * Returns a list of all songs
-     * @return 
+     *
+     * @return
      */
     public ObservableList<Song> getAllSongs()
     {
         return songs;
     }
-    
+
     /**
      * Sets currentListControl
-     * @param currentListControl 
+     *
+     * @param currentListControl
      */
     public void setCurrentListControl(Control currentListControl)
     {
-        this.currentListControl = currentListControl; 
+        this.currentListControl = currentListControl;
     }
-    
+
     /**
      * Sets current playlist
-     * @param playlist 
+     *
+     * @param playlist
      */
     public void setCurrentPlaylist(Playlist playlist)
     {
         currentPlaylist = playlist;
     }
-    
+
     /**
      * sets current index
-     * @param index 
+     *
+     * @param index
      */
     public void setIndex(int index)
     {
         currentIndex = index;
     }
-    
+
     /**
      * sets repeat song boolean
-     * @param value 
+     *
+     * @param value
      */
     public void setRepeatSong(boolean value)
     {
         repeatSong = value;
     }
-    
+
     /**
      * gets repeat song boolean
-     * @return 
+     *
+     * @return
      */
     public boolean getRepeatSong()
     {
         return repeatSong;
     }
-    
+
     public void setSelectedIndex(int selectedIndex)
     {
         this.selectedIndex = selectedIndex;
     }
-    
+
     public int gettSelectedPlaylistSongIndex()
-    {      
-        return selectedIndex;
-    }
-    /**
-     * Stops the current song and plays the song passed to it with the song parameter
-     * @param song 
-     */
-    public void playSong(Song song)
     {
-        
-        if (mTPlayer == null)
-        {            
-            playTheSong(song);
-        }
-        else
-        {
-            mTPlayer.getMediaPlayer().stop();
-            playTheSong(song);
-        }            
+        return selectedIndex;
     }
 
     /**
-     * If a song is paused, and this method is called the song will resume playing. If it is playing it will pause.
-     * If nothing is playing it will start playing the selected song
-     * 
+     * Stops the current song and plays the song passed to it with the song
+     * parameter
+     *
+     * @param song
+     */
+    public void playSong(Song song)
+    {
+
+        if (mTPlayer == null)
+        {
+            playTheSong(song);
+        } else
+        {
+            mTPlayer.getMediaPlayer().stop();
+            playTheSong(song);
+        }
+    }
+
+    /**
+     * If a song is paused, and this method is called the song will resume
+     * playing. If it is playing it will pause. If nothing is playing it will
+     * start playing the selected song
+     *
      */
     public void playSongButtonClick()
     {
         Song songToPlay;
         try
         {
-            ListView<Song> playlist = (ListView)currentListControl;
-            songToPlay = playlist.getSelectionModel().getSelectedItem();    
-        }
-        catch(ClassCastException c)
-        {
-            TableView<Song> playlist = (TableView)currentListControl;
+            ListView<Song> playlist = (ListView) currentListControl;
             songToPlay = playlist.getSelectionModel().getSelectedItem();
-           
-        }   
-        
-        if(mTPlayer != null)
+        } catch (ClassCastException c)
         {
-            
-            if(currentIndex == lastSongIndex)
+            TableView<Song> playlist = (TableView) currentListControl;
+            songToPlay = playlist.getSelectionModel().getSelectedItem();
+
+        }
+
+        if (mTPlayer != null)
+        {
+
+            if (currentIndex == lastSongIndex)
             {
                 //it is the same song as the last. the song should pause/play
-                if(mTPlayer.isPaused())
+                if (mTPlayer.isPaused())
                 {
                     //resume
                     timeline.play();
                     mTPlayer.getMediaPlayer().play();
                     mTPlayer.setPause(false);
-            
-                }
-                else
+
+                } else //pause
                 {
-                    //pause
-                    if(mTPlayer.getMediaPlayer().getCurrentTime().toMillis() < mTPlayer.getMediaPlayer().getCycleDuration().toMillis())
+                    if (mTPlayer.getMediaPlayer().getCurrentTime().toMillis() < mTPlayer.getMediaPlayer().getCycleDuration().toMillis())
                     {
                         //mTPlayer.getMediaPlayer().setAutoPlay(false);
                         //playTheSong(song);
                         timeline.pause();
-                        mTPlayer.getMediaPlayer().pause();                    
+                        mTPlayer.getMediaPlayer().pause();
                         mTPlayer.setPause(true);
                         //Pause song            
-                    }
-                    else
+                    } else
                     {
                         playTheSong(songToPlay);
                     }
                 }
-            }
-            else
+            } else
             {
                 //it is a new song. play the song
                 mTPlayer.getMediaPlayer().stop();
                 playTheSong(songToPlay);
-            }          
-        }
-        else
-        {   
-                //no song playing, and no song has been played before
-                playTheSong(songToPlay);
-                
+            }
+        } else
+        {
+            //no song playing, and no song has been played before
+            playTheSong(songToPlay);
+
         }
     }
-    
+
     /**
      * Plays the song that is passed in the parameter.
-     * @param song 
+     *
+     * @param song
      */
     private void playTheSong(Song song)
-    {      
+    {
 
-        if(playingSong == true)
+        if (playingSong == true)
         {
             timeline.stop();
-            
-            
+
         }
         songPlaying = song;
         playingSong = true;
-        
+
         mTPlayer = new MyTunesPlayer(song.getFilePath());
         mTPlayer.getMediaPlayer().setAutoPlay(true);
-        
-        //lastSongId = song.getId();
+        setChanged();
+        notifyObservers();
 
+        //lastSongId = song.getId();
         lastSongIndex = currentIndex;
-        
+
         ListView playlist = null;
-        
+
         try
         {
-            playlist = (ListView)currentListControl;
+            playlist = (ListView) currentListControl;
             //playlist.getSelectionModel().clearAndSelect(currentList.indexOf(nextSong));
             //currentIndex = playlist.getSelectionModel().getSelectedIndex();
             //currentIndex = playlist.ge
-            
-        }
-        catch(ClassCastException c)
+
+        } catch (ClassCastException c)
         {
             System.out.println("sdas");
         }
-        
+
         //index = currentList.indexOf(song);
-        startDelay(song); 
+        startDelay(song);
         //currentIndex = playlist.getSelectionModel().getSelectedIndex();
-        
-        
+
     }
-    
+
     /**
-     * Starts a delay based on the duration of the song. When the delay is gone it calls the "playNextSong" method
-     * @param song 
+     * Starts a delay based on the duration of the song. When the delay is gone
+     * it calls the "playNextSong" method
+     *
+     * @param song
      */
     private void startDelay(Song song)
     {
         if (repeatSong == false)
         {
-            timeline = new Timeline(new KeyFrame(Duration.millis((song.getDuration()*1000)),ae -> playNextSong("next")));timeline.play();
-        }
-        else
+            timeline = new Timeline(new KeyFrame(Duration.millis((song.getDuration() * 1000)), ae -> playNextSong("next")));
+            timeline.play();
+        } else
         {
-            timeline = new Timeline(new KeyFrame(Duration.millis((song.getDuration()*1000)),ae -> playNextSong("repeat")));timeline.play();
+            timeline = new Timeline(new KeyFrame(Duration.millis((song.getDuration() * 1000)), ae -> playNextSong("repeat")));
+            timeline.play();
         }
-        
+
         runningDelay = true;
     }
-    
+
     /**
      * Returns the song playing
-     * @return 
+     *
+     * @return
      */
     public Song getSongPlaying()
     {
         return songPlaying;
     }
-    
+
     /**
      * Calls the "playNextSong" method with the string parameter "next"
      */
     public void pressNextButton()
-    {       
+    {
         //mTPlayer.setPause(false);
         if (mTPlayer == null)
         {
@@ -327,16 +333,16 @@ public class Model
             timeline.stop();
 
             playNextSong("next");
-        }
-        else
+        } else
         {
             mTPlayer.getMediaPlayer().stop();
 
             timeline.stop();
-            
-            playNextSong("next");           
-        }       
+
+            playNextSong("next");
+        }
     }
+
     /**
      * Calls the "playNextSong" method with the string parameter "previous"
      */
@@ -348,23 +354,24 @@ public class Model
             timeline.stop();
 
             playNextSong("previous");
-        }
-        else
+        } else
         {
             mTPlayer.getMediaPlayer().stop();
 
             timeline.stop();
-            
-            playNextSong("previous");         
+
+            playNextSong("previous");
         }
     }
-    
+
     /**
-     * Plays the next song. The parameter defines whether the next is song is the previous, next or the same.
-     * Moves the playlists selection model to the next song aswell
-     * @param previousNextOrRepeat 
+     * Plays the next song. The parameter defines whether the next is song is
+     * the previous, next or the same. Moves the playlists selection model to
+     * the next song aswell
+     *
+     * @param previousNextOrRepeat
      */
-    private void playNextSong(String previousNextOrRepeat) 
+    private void playNextSong(String previousNextOrRepeat)
     {
         playingSong = false;
         Song nextSong = null;
@@ -372,107 +379,102 @@ public class Model
         {
             if (repeatSong == false)
             {
-                nextSong = getNextSongInCurrentList(songPlaying,previousNextOrRepeat);
-            }
-            else
+                nextSong = getNextSongInCurrentList(songPlaying, previousNextOrRepeat);
+            } else
             {
-                nextSong = getNextSongInCurrentList(songPlaying,"repeat");
+                nextSong = getNextSongInCurrentList(songPlaying, "repeat");
             }
-            
+
         } catch (IOException ex)
         {
             ex.printStackTrace();
         } catch (UnsupportedAudioFileException ex)
         {
-           ex.printStackTrace();
+            ex.printStackTrace();
         }
-        
+
         try
         {
-            ListView<Song> playlist = (ListView)currentListControl;
+            ListView<Song> playlist = (ListView) currentListControl;
             //playlist.getSelectionModel().clearAndSelect(currentList.indexOf(nextSong));
             playlist.getSelectionModel().clearAndSelect(currentIndex);
-            
-        }
-        catch(ClassCastException c)
+
+        } catch (ClassCastException c)
         {
-            TableView<Song> playlist = (TableView)currentListControl;
+            TableView<Song> playlist = (TableView) currentListControl;
             //playlist.getSelectionModel().clearAndSelect(currentList.indexOf(nextSong));
             playlist.getSelectionModel().clearAndSelect(currentIndex);
         }
         double vol = mTPlayer.getMediaPlayer().getVolume();
         playTheSong(nextSong);
+
         mTPlayer.getMediaPlayer().setVolume(vol);
-        
+
         //runningDelay = false;      
     }
-    
+
     /**
-     * Returns the next/previous or same song in the currently active list of songs, depending on the String parameter given
+     * Returns the next/previous or same song in the currently active list of
+     * songs, depending on the String parameter given
+     *
      * @param song
      * @return the next song
      */
     public Song getNextSongInCurrentList(Song currentSong, String previousNextOrRepeat) throws IOException, UnsupportedAudioFileException
     {
-        Song nextSong;       
-        
-        if(songs.contains(currentSong))
+        Song nextSong;
+
+        if (songs.contains(currentSong))
         {
             currentList = songs;
             System.out.println("List: all list");
-        }
-        else if(songsByPlaylistId.contains(currentSong))
+        } else if (songsByPlaylistId.contains(currentSong))
         {
             currentList = songsByPlaylistId;
             System.out.println("List: playlist list");
-        }
-        else
+        } else
         {
             currentList = null;
             System.out.println("ERROR no list found");
-        }        
-        
+        }
+
         System.out.println("index:" + currentIndex);
-        
+
         if (previousNextOrRepeat.equals("next"))
         {
-            if (currentIndex != currentList.size()-1)
+            if (currentIndex != currentList.size() - 1)
             {
                 nextSong = currentList.get(currentIndex + 1);
                 currentIndex = currentIndex + 1;
-            }
-            else
+            } else
             {
                 nextSong = currentList.get(0);
                 currentIndex = 0;
             }
-        }
-        else if(previousNextOrRepeat.equals("previous"))
+        } else if (previousNextOrRepeat.equals("previous"))
         {
             if (currentIndex != 0)
             {
                 nextSong = currentList.get(currentIndex - 1);
                 currentIndex = currentIndex - 1;
-            }
-            else
+            } else
             {
                 nextSong = currentList.get(0);
                 currentIndex = 0;
             }
-        }
-        else
+        } else
         {
             nextSong = currentSong;
         }
-        
+
         return nextSong;
     }
-    
+
     public void deleteSong(Song song) throws IOException
     {
 
-            mMgr.deleteSong(song.getId());
-            songs.remove(song);
+        mMgr.deleteSong(song.getId());
+        songs.remove(song);
     }
 
     public void createNewPlaylist(Playlist playlistToEdit, String playlistName) throws IOException, UnsupportedAudioFileException
@@ -480,14 +482,13 @@ public class Model
         if (playlistToEdit == null)
         {
             Playlist playlistToAdd = mMgr.createNewPlaylist(playlistName);
-            playlists.add(playlistToAdd);            
-        }
-        else
-        {          
-                playlistToEdit.setName(playlistName);
-                mMgr.editPlaylistName(playlistToEdit);          
-                playlists.clear();
-                playlists.addAll(mMgr.getAllPlayLists());
+            playlists.add(playlistToAdd);
+        } else
+        {
+            playlistToEdit.setName(playlistName);
+            mMgr.editPlaylistName(playlistToEdit);
+            playlists.clear();
+            playlists.addAll(mMgr.getAllPlayLists());
         }
 
     }
@@ -504,33 +505,30 @@ public class Model
 
     public void deletPlaylist(Playlist playlist) throws IOException
     {
-            mMgr.deletePlaylist(playlist.getId());
+        mMgr.deletePlaylist(playlist.getId());
 
-            playlists.remove(playlist);
-            songsByPlaylistId.clear();
-           
+        playlists.remove(playlist);
+        songsByPlaylistId.clear();
 
     }
 
     public void showPlaylistSongs(int playlistId) throws UnsupportedAudioFileException, IOException
 
     {
-            songsByPlaylistId.clear();
-            songsByPlaylistId.addAll(mMgr.getSongsByPlaylistId(playlistId));      
+        songsByPlaylistId.clear();
+        songsByPlaylistId.addAll(mMgr.getSongsByPlaylistId(playlistId));
     }
-
 
     public void addSongToPlaylist(Song songToAdd, Playlist playlistToAddTo) throws UnsupportedAudioFileException, IOException
 
     {
 
-            //  songsByPlaylistId.add(songToAdd);
-
-            mMgr.addSongToPlaylist(songToAdd.getId(), playlistToAddTo.getId());
-            playlistToAddTo.setNumberOfSongsInPlaylist(+1);
-            playlists.clear();
-            playlists.addAll(mMgr.getAllPlayLists());
-            showPlaylistSongs(playlistToAddTo.getId());
+        //  songsByPlaylistId.add(songToAdd);
+        mMgr.addSongToPlaylist(songToAdd.getId(), playlistToAddTo.getId());
+        playlistToAddTo.setNumberOfSongsInPlaylist(+1);
+        playlists.clear();
+        playlists.addAll(mMgr.getAllPlayLists());
+        showPlaylistSongs(playlistToAddTo.getId());
 
     }
 
@@ -538,8 +536,7 @@ public class Model
     {
         List<Song> songList = null;
 
-            songList = mMgr.search(query);
-
+        songList = mMgr.search(query);
 
         return songList;
     }
@@ -558,8 +555,7 @@ public class Model
         {
             Collections.swap(songsByPlaylistId, indexId - 1, indexId);
 
-        }
-        else
+        } else
         {
             indexId += 1;
         }
@@ -570,18 +566,16 @@ public class Model
     public int moveSongDown(Song songToMoveDown)
     {
         int indexId = songsByPlaylistId.indexOf(songToMoveDown);
-        if (indexId  != songsByPlaylistId.size()-1)
+        if (indexId != songsByPlaylistId.size() - 1)
         {
             Collections.swap(songsByPlaylistId, indexId + 1, indexId);
 
-        }
-        else
+        } else
         {
             indexId -= 1;
         }
         return indexId;
     }
-
 
     private void setVolume()
     {
@@ -602,12 +596,11 @@ public class Model
         {
             songSong.setFilePath(fileSong.getAbsolutePath());
         }
-        
-            mMgr.saveEditedSong(songSong);
-            songs.clear();
-            songs.addAll(mMgr.getAllSongs());
 
-        
+        mMgr.saveEditedSong(songSong);
+        songs.clear();
+        songs.addAll(mMgr.getAllSongs());
+
     }
 
     public MyTunesPlayer getmTPlayer()
@@ -617,23 +610,16 @@ public class Model
 
     public void deleteSongInPlaylist(Song song, Playlist playList) throws IOException, UnsupportedAudioFileException
     {
-        mMgr.deleteSongInPlayList(song.getId(),playList.getId());
+        mMgr.deleteSongInPlayList(song.getId(), playList.getId());
         songsByPlaylistId.remove(song);
-        
+
         //mMgr.addSongToPlaylist(songToAdd.getId(), playlistToAddTo.getId());
         playList.setNumberOfSongsInPlaylist(-1);
         playlists.clear();
         playlists.addAll(mMgr.getAllPlayLists());
         showPlaylistSongs(playList.getId());
-        
-        
-        
+
         //mMgr.
     }
-
-      
-    
-
-    
 
 }

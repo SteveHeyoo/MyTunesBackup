@@ -10,6 +10,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -19,6 +21,8 @@ import javafx.beans.binding.ObjectBinding;
 import javafx.beans.binding.StringBinding;
 
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -43,6 +47,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import mytunes.BE.Playlist;
 import mytunes.BE.Song;
@@ -52,7 +57,7 @@ import mytunes.GUI.MODEL.Model;
  *
  * @author Bo
  */
-public class FXMLDocumentController implements Initializable
+public class FXMLDocumentController implements Initializable, Observer
 {
 
     private Model model;
@@ -96,8 +101,7 @@ public class FXMLDocumentController implements Initializable
     public FXMLDocumentController()
     {
         model = Model.getInstance();
-
-        //    progressbarDuration.
+        model.addObserver(this);
     }
 
     @Override
@@ -191,7 +195,7 @@ public class FXMLDocumentController implements Initializable
             model.setCurrentListControl(currentControlList);
             model.playSong(currentSong);
             model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue() / 100);
-            bindPlayerToGUI();
+            //  mediaBinding();
 
         }
 
@@ -313,7 +317,6 @@ public class FXMLDocumentController implements Initializable
             model.setCurrentListControl(currentControlList);
             model.playSong(currentSong);
             model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue() / 100);
-            bindPlayerToGUI();
 
             //currentControlList = listPlaylistSong;
         }
@@ -366,7 +369,6 @@ public class FXMLDocumentController implements Initializable
         model.setCurrentListControl(currentControlList);
         model.playSongButtonClick();
         model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue() / 100);
-        bindPlayerToGUI();
 
         try
         {
@@ -433,7 +435,6 @@ public class FXMLDocumentController implements Initializable
 
         model.pressNextButton();
         model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue() / 100);
-        bindPlayerToGUI();
 
     }
 
@@ -442,7 +443,6 @@ public class FXMLDocumentController implements Initializable
     {
         model.pressPreviousButton();
         model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue() / 100);
-        bindPlayerToGUI();
     }
 
     private void handleRadioReapetSong(ActionEvent event)
@@ -483,6 +483,7 @@ public class FXMLDocumentController implements Initializable
                 return form;
             }
         });
+
         progressbarDuration.progressProperty().bind(new ObjectBinding<Number>()
         {
             {
@@ -536,4 +537,9 @@ public class FXMLDocumentController implements Initializable
         model.setRepeatSong(!model.getRepeatSong());
     }
 
+    @Override
+    public void update(Observable o, Object arg)
+    {
+        bindPlayerToGUI();
+    }
 }
