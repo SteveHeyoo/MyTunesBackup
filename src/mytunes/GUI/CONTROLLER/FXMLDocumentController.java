@@ -186,15 +186,17 @@ public class FXMLDocumentController implements Initializable
     {
         currentSong = tblSong.getSelectionModel().getSelectedItem();
         currentControlList = tblSong;
-
+        model.setSelectedIndex(tblSong.getSelectionModel().getSelectedIndex());
         if (event.getClickCount() == 2 && currentSong != null)
         {
+            model.setIndex(tblSong.getSelectionModel().getSelectedIndex());
             model.setCurrentListControl(currentControlList);
             model.playSong(currentSong);
             model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue() / 100);
             bindPlayerToGUI();
 
         }
+        
     }
     @FXML
     private void handleTblViewSongsDelete(ActionEvent event)
@@ -306,7 +308,7 @@ public class FXMLDocumentController implements Initializable
     {
         currentSong = listPlaylistSong.getSelectionModel().getSelectedItem();
         currentControlList = listPlaylistSong;
-
+        model.setSelectedIndex(listPlaylistSong.getSelectionModel().getSelectedIndex());
         if (event.getClickCount() == 2 && currentSong != null)
         {
             model.setIndex(listPlaylistSong.getSelectionModel().getSelectedIndex());
@@ -359,14 +361,27 @@ public class FXMLDocumentController implements Initializable
 
     @FXML
     private void handlePlayButton(ActionEvent event)
-    {
-        //model.playSong(currentSong);
-        model.setIndex(listPlaylistSong.getSelectionModel().getSelectedIndex());
+    {      
         model.setCurrentListControl(currentControlList);
         model.playSongButtonClick();
         model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue() / 100);
         bindPlayerToGUI();
 
+        try
+        {
+            ListView<Song> playlist = (ListView)currentControlList;
+            model.setIndex(playlist.getSelectionModel().getSelectedIndex());
+            
+        }
+        catch(ClassCastException c)
+        {
+            TableView<Song> playlist = (TableView)currentControlList;
+            model.setIndex(playlist.getSelectionModel().getSelectedIndex());
+
+
+        }
+        model.playSongButtonClick();
+        model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue()/100);
         //btnPlaySong.setText("Pause");
     }
 

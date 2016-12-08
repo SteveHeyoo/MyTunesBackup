@@ -37,6 +37,7 @@ public class Model
     private MyTunesPlayer mTPlayer;
     private int lastSongId;
     private int lastSongIndex;
+    private int selectedIndex;
     private boolean runningDelay;
     private boolean playingSong;
     
@@ -148,7 +149,15 @@ public class Model
         return repeatSong;
     }
     
+    public void setSelectedIndex(int selectedIndex)
+    {
+        this.selectedIndex = selectedIndex;
+    }
     
+    public int gettSelectedPlaylistSongIndex()
+    {      
+        return selectedIndex;
+    }
     /**
      * Stops the current song and plays the song passed to it with the song parameter
      * @param song 
@@ -601,6 +610,7 @@ public class Model
         return mTPlayer;
     }
 
+      
     
 
     
