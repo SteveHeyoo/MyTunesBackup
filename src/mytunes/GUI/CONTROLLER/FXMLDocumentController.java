@@ -380,8 +380,6 @@ public class FXMLDocumentController implements Initializable
 
 
         }
-        model.playSongButtonClick();
-        model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue()/100);
         //btnPlaySong.setText("Pause");
     }
 
