@@ -610,6 +610,22 @@ public class Model
         return mTPlayer;
     }
 
+    public void deleteSongInPlaylist(Song song, Playlist playList) throws IOException, UnsupportedAudioFileException
+    {
+        mMgr.deleteSongInPlayList(song.getId(),playList.getId());
+        songsByPlaylistId.remove(song);
+        
+        //mMgr.addSongToPlaylist(songToAdd.getId(), playlistToAddTo.getId());
+        playList.setNumberOfSongsInPlaylist(-1);
+        playlists.clear();
+        playlists.addAll(mMgr.getAllPlayLists());
+        showPlaylistSongs(playList.getId());
+        
+        
+        
+        //mMgr.
+    }
+
       
     
 

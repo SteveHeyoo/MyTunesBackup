@@ -55,4 +55,39 @@ public class RelationsDAO
         }
     }
 
+    public void deleteSongInPlayList(int songId, int playListId) throws IOException
+    {
+        try (RandomAccessFile raf = new RandomAccessFile(new File(FILE_PATH_RELATIONS), "rw"))
+        {
+            //int indexInBytes = (selectedPlaylistSongIndex)* WRITE_SIZE;        
+            //System.out.println(indexInBytes);
+            
+            //raf.seek(indexInBytes);
+            
+            
+            for (int i = 0; i < raf.length(); i += WRITE_SIZE)
+            {
+                System.out.println("1");
+                raf.seek(i);
+                int readPlayListId = raf.readInt();
+                int readSongId = raf.readInt();
+                System.out.println(readPlayListId + " " + readSongId + " " + songId);
+                if (readPlayListId == playListId)
+                {
+                    System.out.println("2");
+                    
+                    if (readSongId == songId)
+                    {
+                        System.out.println("3");
+                        raf.seek(i);
+                        byte[] overWriteBytes = new byte[WRITE_SIZE];
+                        raf.write(overWriteBytes);
+                        return;
+                    }                    
+                    
+                }           
+            }
+        }
+    }
+
 }

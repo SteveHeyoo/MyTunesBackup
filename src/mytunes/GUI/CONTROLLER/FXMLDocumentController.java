@@ -522,16 +522,26 @@ public class FXMLDocumentController implements Initializable
     @FXML
     private void handleDeleteSongInPlaylist(ActionEvent event)
     {
-    }
-
-    @FXML
-    private void handlePlaylistDelete(ActionEvent event)
-    {
+        int plIndexNum = tblPlaylist.getSelectionModel().getSelectedIndex();
+        int selectedSongIndex = listPlaylistSong.getSelectionModel().getSelectedIndex();
+        try
+        {
+            model.deleteSongInPlaylist(listPlaylistSong.getSelectionModel().getSelectedItem(), tblPlaylist.getSelectionModel().getSelectedItem());
+        } catch (IOException ex)
+        {
+            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnsupportedAudioFileException ex)
+        {
+            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        tblPlaylist.getSelectionModel().clearAndSelect(plIndexNum);
+        listPlaylistSong.getSelectionModel().clearAndSelect(selectedSongIndex);
     }
 
     @FXML
     private void handleRadioRepeatSong(ActionEvent event)
     {
+        model.setRepeatSong(!model.getRepeatSong());
     }
 
 }

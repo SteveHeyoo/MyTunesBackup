@@ -184,4 +184,9 @@ public class MusicManager
         sPlDAO.editSong(songSong);
     }
 
+    public void deleteSongInPlayList(int songId, int playListId) throws IOException
+    {
+        rDAO.deleteSongInPlayList(songId,playListId);
+    }
+
 }
