@@ -254,9 +254,11 @@ public class Model
         {
             timeline.stop();
             
+            
         }
         songPlaying = song;
         playingSong = true;
+        
         mTPlayer = new MyTunesPlayer(song.getFilePath());
         mTPlayer.getMediaPlayer().setAutoPlay(true);
         
@@ -398,7 +400,10 @@ public class Model
             //playlist.getSelectionModel().clearAndSelect(currentList.indexOf(nextSong));
             playlist.getSelectionModel().clearAndSelect(currentIndex);
         }
+        double vol = mTPlayer.getMediaPlayer().getVolume();
         playTheSong(nextSong);
+        mTPlayer.getMediaPlayer().setVolume(vol);
+        
         //runningDelay = false;      
     }
     
