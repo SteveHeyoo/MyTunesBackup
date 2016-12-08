@@ -16,7 +16,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" prefHeight="660.0" prefWidth="1110.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="AnchorPane" prefHeight="660.0" prefWidth="1110.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mytunes.GUI.CONTROLLER.FXMLDocumentController">
    <children>
       <ImageView fitHeight="660.0" fitWidth="1110.0" pickOnBounds="true">
          <image>
@@ -38,7 +38,7 @@
             <Bloom />
          </effect>
       </JFXButton>
-      <JFXButton layoutX="801.0" layoutY="608.0" onAction="#handleTblViewSongDelete" ripplerFill="RED" text="Delete" textFill="WHITE">
+      <JFXButton layoutX="801.0" layoutY="608.0" onAction="#handleTblViewSongsDelete" ripplerFill="RED" text="Delete" textFill="WHITE">
          <effect>
             <Bloom />
          </effect>
@@ -88,7 +88,7 @@
             <Bloom />
          </effect>
       </JFXButton>
-      <TableView fx:id="tblPlaylist" layoutX="25.0" layoutY="173.0" prefHeight="430.0" prefWidth="293.0">
+      <TableView fx:id="tblPlaylist"  layoutX="25.0" layoutY="173.0" prefHeight="430.0" prefWidth="293.0">
         <columns>
           <TableColumn fx:id="columnPlaylistName" prefWidth="75.0" text="Name" />
           <TableColumn fx:id="columnPlaylistNumberOfSongs" prefWidth="74.0" text="Songs" />
@@ -103,7 +103,7 @@
             <InnerShadow />
          </effect>
       </ListView>
-      <TableView fx:id="tblSong" layoutX="671.0" layoutY="173.0" prefHeight="430.0" prefWidth="408.0">
+      <TableView fx:id="tblSong" onMouseClicked="#handleTblViewMouseClick" layoutX="671.0" layoutY="173.0" prefHeight="430.0" prefWidth="408.0">
         <columns>
           <TableColumn fx:id="columnTitle" prefWidth="75.0" text="Title" />
           <TableColumn fx:id="columnArtist" prefWidth="75.0" text="Artist" />

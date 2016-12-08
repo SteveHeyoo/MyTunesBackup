@@ -57,10 +57,6 @@ public class FXMLDocumentController implements Initializable
 
     private Model model;
 
-    @FXML
-    private Label lblSong;
-    @FXML
-    private Label lblSongPlaylist;
 
     @FXML
     private TableView<Playlist> tblPlaylist;
@@ -88,25 +84,13 @@ public class FXMLDocumentController implements Initializable
     @FXML
     private TextField txtFieldSearch;
 
-    @FXML
-    private Button btnPreviousSong;
-    @FXML
-    private Button btnPlaySong;
-    @FXML
-    private Button btnNextSong;
 
     @FXML
     private Slider volumeSlide;
-    @FXML
-    private Label lblVolume;
 
     private Song currentSong;
     private Control currentControlList;
-    @FXML
-    private RadioButton radioRepeat;
-    @FXML
     private Label lblDuration;
-    @FXML
     private JFXProgressBar progressbarDuration;
 
     public FXMLDocumentController()
@@ -195,7 +179,6 @@ public class FXMLDocumentController implements Initializable
 
         stageSongEdit.show();
     }
-
     @FXML
     private void handleTblViewMouseClick(MouseEvent event)
     {
@@ -211,7 +194,6 @@ public class FXMLDocumentController implements Initializable
 
         }
     }
-
     @FXML
     private void handleTblViewSongsDelete(ActionEvent event)
     {
@@ -232,7 +214,6 @@ public class FXMLDocumentController implements Initializable
 
     }
 
-    @FXML
     private void handleDeletePlayList(ActionEvent event)
     {
         Playlist playlist = tblPlaylist.getSelectionModel().getSelectedItem();
@@ -260,7 +241,6 @@ public class FXMLDocumentController implements Initializable
         }
     }
 
-    @FXML
     private void handleShowPlaylistSongs(MouseEvent event)
     {
         Playlist playlist = tblPlaylist.getSelectionModel().getSelectedItem();
@@ -320,7 +300,6 @@ public class FXMLDocumentController implements Initializable
         tblPlaylist.getSelectionModel().clearAndSelect(plIndexNum);
     }
 
-    @FXML
     private void handleSongsOnPlaylistPlay(MouseEvent event)
     {
         currentSong = listPlaylistSong.getSelectionModel().getSelectedItem();
@@ -337,7 +316,6 @@ public class FXMLDocumentController implements Initializable
         }
     }
 
-    @FXML
     private void handleSearch3(KeyEvent event)
     {
         String query = txtFieldSearch.getText().trim();
@@ -390,7 +368,6 @@ public class FXMLDocumentController implements Initializable
 
     
 
-    @FXML
     private void showNewEditPlaylistDialog(Playlist playlist) throws IOException
     {
         // TODO Display the New/Edit gui to enter a name to the new playlist
@@ -418,6 +395,7 @@ public class FXMLDocumentController implements Initializable
         stageNewEditPlaylist.show();
     }
 
+    @FXML
     private void handleEditPlaylist(ActionEvent event) throws IOException
     {
         Playlist playlist = tblPlaylist.getSelectionModel().getSelectedItem();
@@ -453,7 +431,6 @@ public class FXMLDocumentController implements Initializable
         model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue() / 100);
     }
 
-    @FXML
     private void handleRadioReapetSong(ActionEvent event)
     {
         model.setRepeatSong(!model.getRepeatSong());
@@ -512,10 +489,34 @@ public class FXMLDocumentController implements Initializable
         });
     }
 
-    @FXML
     private void handleDragDropFiles(DragEvent event)
     {
         System.out.println("Drag&Dropped a item!");
+    }
+
+    @FXML
+    private void handleQuitProgram(ActionEvent event)
+    {
+    }
+
+    @FXML
+    private void handleTblViewSongDelete(ActionEvent event)
+    {
+    }
+
+    @FXML
+    private void handleDeleteSongInPlaylist(ActionEvent event)
+    {
+    }
+
+    @FXML
+    private void handlePlaylistDelete(ActionEvent event)
+    {
+    }
+
+    @FXML
+    private void handleRadioRepeatSong(ActionEvent event)
+    {
     }
 
 }
