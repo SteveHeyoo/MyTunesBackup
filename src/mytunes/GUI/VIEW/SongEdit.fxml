@@ -3,7 +3,6 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.effect.Bloom?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -22,50 +21,18 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Text>
-      <Text fill="WHITE" layoutX="14.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Title:">
-         <effect>
-            <Bloom />
-         </effect>
-      </Text>
-      <Text fill="WHITE" layoutX="14.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Artist:">
-         <effect>
-            <Bloom />
-         </effect>
-      </Text>
-      <Text fill="WHITE" layoutX="20.0" layoutY="244.0" strokeType="OUTSIDE" strokeWidth="0.0" text="File:">
-         <effect>
-            <Bloom />
-         </effect>
-      </Text>
-      <Text fill="WHITE" layoutX="14.0" layoutY="160.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Category:">
-         <effect>
-            <Bloom />
-         </effect>
-      </Text>
-      <Text fill="WHITE" layoutX="14.0" layoutY="206.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Time:">
-         <effect>
-            <Bloom />
-         </effect>
-      </Text>
+      <Text fill="WHITE" layoutX="14.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Title:" />
+      <Text fill="WHITE" layoutX="14.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Artist:" />
+      <Text fill="WHITE" layoutX="20.0" layoutY="244.0" strokeType="OUTSIDE" strokeWidth="0.0" text="File:" />
+      <Text fill="WHITE" layoutX="14.0" layoutY="160.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Category:" />
+      <Text fill="WHITE" layoutX="14.0" layoutY="206.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Time:" />
       <TextField fx:id="txtTitle" layoutX="91.0" layoutY="48.0" prefHeight="31.0" prefWidth="300.0" />
       <TextField fx:id="txtArtist" layoutX="91.0" layoutY="89.0" prefHeight="31.0" prefWidth="300.0" />
       <TextField fx:id="txtTime" editable="false" layoutX="91.0" layoutY="185.0" prefHeight="31.0" prefWidth="300.0" visible="false" />
       <TextField fx:id="txtFile" layoutX="91.0" layoutY="223.0" prefHeight="31.0" prefWidth="300.0" />
       <ComboBox layoutX="91.0" layoutY="139.0" prefWidth="150.0" />
-      <JFXButton layoutX="327.0" layoutY="268.0" onAction="#handleBtnCancel" ripplerFill="RED" text="Cancel" textFill="WHITE">
-         <effect>
-            <Bloom />
-         </effect>
-      </JFXButton>
-      <JFXButton layoutX="268.0" layoutY="268.0" onAction="#handleSaveSong" ripplerFill="RED" text="Save" textFill="WHITE">
-         <effect>
-            <Bloom />
-         </effect>
-      </JFXButton>
-      <JFXButton layoutX="410.0" layoutY="223.0" onAction="#handleBtnChoose" ripplerFill="RED" text="Choose" textFill="WHITE">
-         <effect>
-            <Bloom />
-         </effect>
-      </JFXButton>
+      <JFXButton layoutX="327.0" layoutY="268.0" onAction="#handleBtnCancel" ripplerFill="RED" text="Cancel" textFill="WHITE" />
+      <JFXButton layoutX="268.0" layoutY="268.0" onAction="#handleSaveSong" ripplerFill="RED" text="Save" textFill="WHITE" />
+      <JFXButton layoutX="410.0" layoutY="223.0" onAction="#handleBtnChoose" ripplerFill="RED" text="Choose" textFill="WHITE" />
    </children>
 </AnchorPane>

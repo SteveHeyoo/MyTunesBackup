@@ -7,9 +7,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.effect.Bloom?>
 <?import javafx.scene.effect.ColorAdjust?>
-<?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -23,110 +21,42 @@
             <Image url="@BG_GUI.png" />
          </image>
       </ImageView>
-      <JFXButton layoutX="1013.0" layoutY="608.0" onAction="#handleQuitProgram" ripplerFill="RED" text="Close" textFill="WHITE">
-         <effect>
-            <Bloom />
-         </effect>
-      </JFXButton>
-      <JFXButton layoutX="736.0" layoutY="608.0" onAction="#handleSongEdit" ripplerFill="RED" text="Edit" textFill="WHITE">
-         <effect>
-            <Bloom />
-         </effect>
-      </JFXButton>
-      <JFXButton layoutX="671.0" layoutY="608.0" onAction="#handleNewSong" ripplerFill="RED" text="New" textFill="WHITE">
-         <effect>
-            <Bloom />
-         </effect>
-      </JFXButton>
-      <JFXButton layoutX="801.0" layoutY="608.0" onAction="#handleTblViewSongsDelete" ripplerFill="RED" text="Delete" textFill="WHITE">
-         <effect>
-            <Bloom />
-         </effect>
-      </JFXButton>
-      <JFXButton layoutX="360.0" layoutY="608.0" onAction="#handleMoveSongUp" ripplerFill="RED" text="⬆" textFill="WHITE">
-         <effect>
-            <Bloom />
-         </effect>
-      </JFXButton>
-      <JFXButton layoutX="401.0" layoutY="608.0" onAction="#handleMoveSongDown" ripplerFill="RED" text="⬇" textFill="WHITE">
-         <effect>
-            <Bloom />
-         </effect>
-      </JFXButton>
-      <JFXButton layoutX="490.0" layoutY="608.0" onAction="#handleDeleteSongInPlaylist" ripplerFill="RED" text="Delete" textFill="WHITE">
-         <effect>
-            <Bloom />
-         </effect>
-      </JFXButton>
-      <JFXButton layoutX="25.0" layoutY="608.0" onAction="#handleNewPlaylist" ripplerFill="RED" text="New" textFill="WHITE">
-         <effect>
-            <Bloom />
-         </effect>
-      </JFXButton>
-      <JFXButton layoutX="90.0" layoutY="608.0" onAction="#handleEditPlaylist" ripplerFill="RED" text="Edit" textFill="WHITE">
-         <effect>
-            <Bloom />
-         </effect>
-      </JFXButton>
-      <JFXButton layoutX="155.0" layoutY="608.0" onAction="#handlePlaylistDelete" ripplerFill="RED" text="Delete" textFill="WHITE">
-         <effect>
-            <Bloom />
-         </effect>
-      </JFXButton>
-      <JFXButton layoutX="155.0" layoutY="20.0" onAction="#handlePlayNextSong" ripplerFill="RED" text="Next" textFill="WHITE">
-         <effect>
-            <Bloom />
-         </effect>
-      </JFXButton>
-      <JFXButton layoutX="99.0" layoutY="20.0" onAction="#handlePlayButton" ripplerFill="RED" text="Play" textFill="WHITE">
-         <effect>
-            <Bloom />
-         </effect>
-      </JFXButton>
-      <JFXButton layoutX="14.0" layoutY="20.0" onAction="#handlePlayPreviousSong" ripplerFill="RED" text="Previous" textFill="WHITE">
-         <effect>
-            <Bloom />
-         </effect>
-      </JFXButton>
-      <TableView fx:id="tblPlaylist"  layoutX="25.0" layoutY="173.0" prefHeight="430.0" prefWidth="293.0">
+      <JFXButton layoutX="1013.0" layoutY="608.0" onAction="#handleQuitProgram" ripplerFill="RED" text="Close" textFill="WHITE" />
+      <JFXButton layoutX="736.0" layoutY="608.0" onAction="#handleSongEdit" ripplerFill="RED" text="Edit" textFill="WHITE" />
+      <JFXButton layoutX="671.0" layoutY="608.0" onAction="#handleNewSong" ripplerFill="RED" text="New" textFill="WHITE" />
+      <JFXButton layoutX="801.0" layoutY="608.0" onAction="#handleTblViewSongsDelete" ripplerFill="RED" text="Delete" textFill="WHITE" />
+      <JFXButton layoutX="360.0" layoutY="608.0" onAction="#handleMoveSongUp" ripplerFill="RED" text="⬆" textFill="WHITE" />
+      <JFXButton layoutX="401.0" layoutY="608.0" onAction="#handleMoveSongDown" ripplerFill="RED" text="⬇" textFill="WHITE" />
+      <JFXButton layoutX="490.0" layoutY="608.0" onAction="#handleDeleteSongInPlaylist" ripplerFill="RED" text="Delete" textFill="WHITE" />
+      <JFXButton layoutX="25.0" layoutY="608.0" onAction="#handleNewPlaylist" ripplerFill="RED" text="New" textFill="WHITE" />
+      <JFXButton layoutX="90.0" layoutY="608.0" onAction="#handleEditPlaylist" ripplerFill="RED" text="Edit" textFill="WHITE" />
+      <JFXButton layoutX="155.0" layoutY="608.0" onAction="#handlePlaylistDelete" ripplerFill="RED" text="Delete" textFill="WHITE" />
+      <JFXButton layoutX="155.0" layoutY="20.0" onAction="#handlePlayNextSong" ripplerFill="RED" text="Next" textFill="WHITE" />
+      <JFXButton layoutX="99.0" layoutY="20.0" onAction="#handlePlayButton" ripplerFill="RED" text="Play" textFill="WHITE" />
+      <JFXButton layoutX="14.0" layoutY="20.0" onAction="#handlePlayPreviousSong" ripplerFill="RED" text="Previous" textFill="WHITE" />
+      <TableView fx:id="tblPlaylist" layoutX="25.0" layoutY="173.0" prefHeight="430.0" prefWidth="293.0">
         <columns>
           <TableColumn fx:id="columnPlaylistName" prefWidth="75.0" text="Name" />
           <TableColumn fx:id="columnPlaylistNumberOfSongs" prefWidth="74.0" text="Songs" />
             <TableColumn fx:id="columnPlaylistTotalDuration" prefWidth="76.0" text="Time" />
         </columns>
-         <effect>
-            <InnerShadow />
-         </effect>
       </TableView>
-      <ListView fx:id="listPlaylistSong" layoutX="358.0" layoutY="173.0" prefHeight="430.0" prefWidth="200.0">
-         <effect>
-            <InnerShadow />
-         </effect>
-      </ListView>
-      <TableView fx:id="tblSong" onMouseClicked="#handleTblViewMouseClick" layoutX="671.0" layoutY="173.0" prefHeight="430.0" prefWidth="408.0">
+      <ListView fx:id="listPlaylistSong" layoutX="358.0" layoutY="173.0" prefHeight="430.0" prefWidth="200.0" />
+      <TableView fx:id="tblSong" layoutX="671.0" layoutY="173.0" onMouseClicked="#handleTblViewMouseClick" prefHeight="430.0" prefWidth="408.0">
         <columns>
           <TableColumn fx:id="columnTitle" prefWidth="75.0" text="Title" />
           <TableColumn fx:id="columnArtist" prefWidth="75.0" text="Artist" />
             <TableColumn fx:id="columnCategory" prefWidth="75.0" text="Category" />
             <TableColumn fx:id="columnTime" prefWidth="75.0" text="Time" />
         </columns>
-         <effect>
-            <InnerShadow />
-         </effect>
       </TableView>
       <Text fill="WHITE" layoutX="225.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Volume" wrappingWidth="77.6708984375">
-         <effect>
-            <Bloom />
-         </effect>
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
       </Text>
       <TextField fx:id="txtFieldSearch" layoutX="834.0" layoutY="20.0" prefHeight="31.0" prefWidth="244.0" />
       <JFXButton layoutX="574.0" layoutY="221.0" onAction="#handleAddSongToPlaylist" prefHeight="73.0" prefWidth="78.0" ripplerFill="RED" text="«  " textFill="WHITE">
-         <effect>
-            <Bloom />
-         </effect>
          <font>
             <Font size="32.0" />
          </font>
@@ -148,9 +78,6 @@
          </font>
       </Text>
       <Text fill="WHITE" layoutX="786.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Filter:" wrappingWidth="47.6708984375">
-         <effect>
-            <Bloom />
-         </effect>
          <font>
             <Font name="System Bold" size="15.0" />
          </font>

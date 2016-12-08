@@ -2,8 +2,6 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.effect.Bloom?>
-<?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -22,25 +20,9 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Text>
-      <TextField fx:id="lblNameNewEditPlaylist" layoutX="142.0" layoutY="55.0" prefHeight="31.0" prefWidth="271.0">
-         <effect>
-            <InnerShadow />
-         </effect>
-      </TextField>
-      <JFXButton layoutX="298.0" layoutY="95.0" onAction="#handleCancelNewPlaylist" ripplerFill="RED" text="Cancel" textFill="WHITE">
-         <effect>
-            <Bloom />
-         </effect>
-      </JFXButton>
-      <JFXButton layoutX="362.0" layoutY="95.0" onAction="#handleSaveNewPlaylist" ripplerFill="RED" text="Save" textFill="WHITE">
-         <effect>
-            <Bloom />
-         </effect>
-      </JFXButton>
-      <Text fill="WHITE" layoutX="82.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:">
-         <effect>
-            <Bloom />
-         </effect>
-      </Text>
+      <TextField fx:id="lblNameNewEditPlaylist" layoutX="142.0" layoutY="55.0" prefHeight="31.0" prefWidth="271.0" />
+      <JFXButton layoutX="298.0" layoutY="95.0" onAction="#handleCancelNewPlaylist" ripplerFill="RED" text="Cancel" textFill="WHITE" />
+      <JFXButton layoutX="362.0" layoutY="95.0" onAction="#handleSaveNewPlaylist" ripplerFill="RED" text="Save" textFill="WHITE" />
+      <Text fill="WHITE" layoutX="82.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:" />
    </children>
 </AnchorPane>
