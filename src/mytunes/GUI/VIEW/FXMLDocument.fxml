@@ -9,6 +9,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -35,14 +36,14 @@
       <JFXButton layoutX="611.0" layoutY="62.0" onAction="#handlePlayNextSong" ripplerFill="RED" text="Next" textFill="WHITE" />
       <JFXButton layoutX="435.0" layoutY="62.0" onAction="#handlePlayButton" ripplerFill="RED" text="Play" textFill="WHITE" />
       <JFXButton layoutX="258.0" layoutY="60.0" onAction="#handlePlayPreviousSong" ripplerFill="RED" text="Previous" textFill="WHITE" />
-      <TableView fx:id="tblPlaylist" onMouseClicked="#handleShowPlaylistSongs"  layoutX="25.0" layoutY="173.0" prefHeight="430.0" prefWidth="293.0">
+      <TableView fx:id="tblPlaylist" layoutX="25.0" layoutY="173.0" onMouseClicked="#handleShowPlaylistSongs" prefHeight="430.0" prefWidth="293.0">
         <columns>
           <TableColumn fx:id="columnPlaylistName" prefWidth="75.0" text="Name" />
           <TableColumn fx:id="columnPlaylistNumberOfSongs" prefWidth="74.0" text="Songs" />
             <TableColumn fx:id="columnPlaylistTotalDuration" prefWidth="76.0" text="Time" />
         </columns>
       </TableView>
-      <ListView fx:id="listPlaylistSong" onMouseClicked="#handleSongsOnPlaylistPlay"  layoutX="358.0" layoutY="173.0" prefHeight="430.0" prefWidth="200.0" />
+      <ListView fx:id="listPlaylistSong" layoutX="358.0" layoutY="173.0" onMouseClicked="#handleSongsOnPlaylistPlay" prefHeight="430.0" prefWidth="200.0" />
       <TableView fx:id="tblSong" layoutX="671.0" layoutY="173.0" onMouseClicked="#handleTblViewMouseClick" prefHeight="430.0" prefWidth="408.0">
         <columns>
           <TableColumn fx:id="columnTitle" prefWidth="75.0" text="Title" />
@@ -83,7 +84,10 @@
             <Font name="System Bold" size="15.0" />
          </font>
       </Text>
-      <JFXProgressBar fx:id="progressbarDuration" layoutX="358.0" layoutY="44.0" progress="0.0" scaleX="2.0" />
+      <JFXProgressBar fx:id="progressbarDuration" layoutX="358.0" layoutY="44.0" progress="0.0" scaleX="2.0">
+         <effect>
+            <ColorAdjust contrast="1.0" hue="-0.82" />
+         </effect></JFXProgressBar>
       <JFXSlider fx:id="volumeSlide" layoutX="14.0" layoutY="38.0">
       </JFXSlider>
       <Label fx:id="lblDuration" layoutX="440.0" layoutY="18.0" textFill="WHITE" />
