@@ -21,7 +21,7 @@
    <children>
       <ImageView fitHeight="660.0" fitWidth="1110.0" pickOnBounds="true">
          <image>
-            <Image url="@../../../../FXImages/BG_GUI.png" />
+            <Image url="@BG_GUI.png" />
          </image>
       </ImageView>
       <JFXButton layoutX="1013.0" layoutY="608.0" ripplerFill="RED" text="Close" textFill="WHITE">
