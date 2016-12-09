@@ -45,6 +45,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import mytunes.BE.Playlist;
 import mytunes.BE.Song;
 import mytunes.GUI.MODEL.Model;
@@ -157,7 +158,10 @@ public class FXMLDocumentController implements Initializable, Observer
 
         JFileChooser chooser = new JFileChooser();
         chooser.setMultiSelectionEnabled(true);
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("MP3 Files(*.mp3)", "mp3");
+        chooser.setFileFilter(filter);
         chooser.showOpenDialog(null);
+        
         File[] files = chooser.getSelectedFiles();
 
         if (files != null)
