@@ -537,6 +537,10 @@ public class FXMLDocumentController implements Initializable, Observer
     @FXML
     private void handleDeleteSongInPlaylist(ActionEvent event)
     {
+        if(listPlaylistSong.getSelectionModel().getSelectedItem() == null)
+        {
+            return;
+        }
         int plIndexNum = tblPlaylist.getSelectionModel().getSelectedIndex();
         int selectedSongIndex = listPlaylistSong.getSelectionModel().getSelectedIndex();
         try
