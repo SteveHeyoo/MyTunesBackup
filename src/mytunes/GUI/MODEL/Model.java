@@ -619,6 +619,13 @@ public class Model extends Observable
     {
         Duration newDuration = mTPlayer.getMediaPlayer().getTotalDuration().multiply(mouseClickedWidth / 200);
         mTPlayer.getMediaPlayer().seek(newDuration);
+        timeline.stop();
+        
+        Duration totalTime = mTPlayer.getMediaPlayer().getTotalDuration();
+        Duration timeLeft = totalTime.subtract(newDuration);
+        
+        timeline = new Timeline(new KeyFrame(Duration.millis((timeLeft.toMillis())), ae -> playNextSong("next")));
+        timeline.play();
     }
 
 }
