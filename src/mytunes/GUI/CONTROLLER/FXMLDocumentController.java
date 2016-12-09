@@ -375,7 +375,12 @@ public class FXMLDocumentController implements Initializable, Observer
     @FXML
     private void handlePlayButton(ActionEvent event)
     {
-        model.setCurrentListControl(currentControlList);
+        if(tblSong.getSelectionModel().getSelectedItem() == null || listPlaylistSong.getSelectionModel().getSelectedItem() == null)
+        {
+            return;
+        }
+        
+        model.setCurrentListControl(currentControlList);        
         model.playSongButtonClick();
         model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue() / 100);
 
@@ -445,7 +450,10 @@ public class FXMLDocumentController implements Initializable, Observer
     @FXML
     private void handlePlayNextSong(ActionEvent event)
     {
-
+        if(tblSong.getSelectionModel().getSelectedItem() == null || listPlaylistSong.getSelectionModel().getSelectedItem() == null)
+        {
+            return;
+        }
         model.pressNextButton();
         model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue() / 100);
 
@@ -454,6 +462,10 @@ public class FXMLDocumentController implements Initializable, Observer
     @FXML
     private void handlePlayPreviousSong(ActionEvent event)
     {
+        if(tblSong.getSelectionModel().getSelectedItem() == null || listPlaylistSong.getSelectionModel().getSelectedItem() == null)
+        {
+            return;
+        }
         model.pressPreviousButton();
         model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue() / 100);
     }

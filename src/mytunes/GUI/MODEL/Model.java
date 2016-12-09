@@ -298,15 +298,9 @@ public class Model extends Observable
      */
     private void startDelay(Song song)
     {
-        if (repeatSong == false)
-        {
-            timeline = new Timeline(new KeyFrame(Duration.millis((song.getDuration() * 1000)), ae -> playNextSong("next")));
-            timeline.play();
-        } else
-        {
-            timeline = new Timeline(new KeyFrame(Duration.millis((song.getDuration() * 1000)), ae -> playNextSong("repeat")));
-            timeline.play();
-        }
+        timeline = new Timeline(new KeyFrame(Duration.millis((song.getDuration() * 1000)), ae -> playNextSong("next")));
+        timeline.play();
+        
 
         runningDelay = true;
     }
@@ -383,8 +377,8 @@ public class Model extends Observable
             } else
             {
                 nextSong = getNextSongInCurrentList(songPlaying, "repeat");
-            }
-
+            }                  
+            
         } catch (IOException ex)
         {
             ex.printStackTrace();
