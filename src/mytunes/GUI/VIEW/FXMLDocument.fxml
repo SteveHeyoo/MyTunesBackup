@@ -43,7 +43,7 @@
         </columns>
       </TableView>
       <ListView fx:id="listPlaylistSong" layoutX="358.0" layoutY="173.0" onMouseClicked="#handleSongsOnPlaylistPlay" prefHeight="430.0" prefWidth="200.0" />
-      <TableView fx:id="tblSong" layoutX="671.0" layoutY="173.0" onMouseClicked="#handleTblViewMouseClick" prefHeight="430.0" prefWidth="408.0">
+      <TableView fx:id="tblSong" layoutX="671.0" layoutY="173.0" onDragDropped="#handleDragDropped" onDragOver="#handleDragOver" onMouseClicked="#handleTblViewMouseClick" prefHeight="430.0" prefWidth="408.0">
         <columns>
           <TableColumn fx:id="columnTitle" prefWidth="75.0" text="Title" />
           <TableColumn fx:id="columnArtist" prefWidth="75.0" text="Artist" />

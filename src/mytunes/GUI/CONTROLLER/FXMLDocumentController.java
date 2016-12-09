@@ -13,8 +13,6 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,13 +37,12 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.stage.FileChooser;
+import javafx.scene.input.TransferMode;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JFileChooser;
 import mytunes.BE.Playlist;
@@ -157,12 +154,12 @@ public class FXMLDocumentController implements Initializable, Observer
                 showAlert("UnsupportedAudioFileException", ex.getMessage());
             }
         }*/
-        
+
         JFileChooser chooser = new JFileChooser();
         chooser.setMultiSelectionEnabled(true);
         chooser.showOpenDialog(null);
         File[] files = chooser.getSelectedFiles();
-        
+
         if (files != null)
         {
             for (int i = 0; i < files.length; i++)
@@ -178,7 +175,7 @@ public class FXMLDocumentController implements Initializable, Observer
                     showAlert("UnsupportedAudioFileException", ex.getMessage());
                 }
             }
-            
+
         }
     }
 
@@ -411,8 +408,7 @@ public class FXMLDocumentController implements Initializable, Observer
                 ListView<Song> playlist = (ListView) currentControlList;
                 model.setIndex(playlist.getSelectionModel().getSelectedIndex());
 
-            } 
-            catch (ClassCastException c)
+            } catch (ClassCastException c)
             {
                 TableView<Song> playlist = (TableView) currentControlList;
                 model.setIndex(playlist.getSelectionModel().getSelectedIndex());
@@ -420,7 +416,6 @@ public class FXMLDocumentController implements Initializable, Observer
             }
         }
 
-        
         //btnPlaySong.setText("Pause");
     }
 
@@ -482,7 +477,7 @@ public class FXMLDocumentController implements Initializable, Observer
             model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue() / 100);
 
         }
-        
+
     }
 
     @FXML
@@ -493,7 +488,7 @@ public class FXMLDocumentController implements Initializable, Observer
             model.pressPreviousButton();
             model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue() / 100);
         }
-        
+
     }
 
     private void handleRadioReapetSong(ActionEvent event)
@@ -598,9 +593,49 @@ public class FXMLDocumentController implements Initializable, Observer
     private void handleSeekDuration(MouseEvent event)
     {
         double mouseClickedWidth = event.getX();
-       
-        model.seekSong(mouseClickedWidth);
-        
-        
+        double progressbarWidth = progressbarDuration.getWidth();
+
+        model.seekSong((mouseClickedWidth / progressbarWidth));
+
+    }
+
+    @FXML
+    private void handleDragDropped(DragEvent event)
+    {
+        Dragboard db = event.getDragboard();
+        boolean success = false;
+        if (db.hasFiles())
+        {
+            success = true;
+            String filePath = null;
+            for (File file : db.getFiles())
+            {
+                try
+                {
+                    model.createNewSong(file);
+                } catch (IOException ex)
+                {
+                    showAlert("IOException", "File must be .mp3 files!");
+                } catch (UnsupportedAudioFileException ex)
+                {
+                    showAlert("UnsupportedAudioFileException", ex.getMessage());
+                }
+            }
+        }
+        event.setDropCompleted(success);
+        event.consume();
+    }
+
+    @FXML
+    private void handleDragOver(DragEvent event)
+    {
+        Dragboard db = event.getDragboard();
+        if (db.hasFiles())
+        {
+            event.acceptTransferModes(TransferMode.COPY);
+        } else
+        {
+            event.consume();
+        }
     }
 }

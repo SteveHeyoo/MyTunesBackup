@@ -617,7 +617,7 @@ public class Model extends Observable
 
     public void seekSong(double mouseClickedWidth)
     {
-        Duration newDuration = mTPlayer.getMediaPlayer().getTotalDuration().multiply(mouseClickedWidth / 200);
+        Duration newDuration = mTPlayer.getMediaPlayer().getTotalDuration().multiply(mouseClickedWidth);
         mTPlayer.getMediaPlayer().seek(newDuration);
         timeline.stop();
         
