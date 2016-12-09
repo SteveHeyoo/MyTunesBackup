@@ -611,7 +611,6 @@ public class FXMLDocumentController implements Initializable, Observer
         if (db.hasFiles())
         {
             success = true;
-            String filePath = null;
             for (File file : db.getFiles())
             {
                 try
@@ -635,11 +634,14 @@ public class FXMLDocumentController implements Initializable, Observer
     {
         Dragboard db = event.getDragboard();
         if (db.hasFiles())
-        {
-            event.acceptTransferModes(TransferMode.COPY);
-        } else
-        {
-            event.consume();
-        }
+            {
+                event.acceptTransferModes(TransferMode.COPY);
+            } 
+            else
+                {
+                    event.consume();
+                }
     }
 }
+
+
