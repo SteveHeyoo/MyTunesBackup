@@ -21,8 +21,6 @@ import javafx.beans.binding.ObjectBinding;
 import javafx.beans.binding.StringBinding;
 
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -31,11 +29,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -43,11 +39,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.media.MediaPlayer;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import mytunes.BE.Playlist;
 import mytunes.BE.Song;
@@ -209,7 +204,10 @@ public class FXMLDocumentController implements Initializable, Observer
         Song song = tblSong.getSelectionModel().getSelectedItem();
         try
         {
-            model.deleteSong(song);
+            if (song != null)
+            {
+                model.deleteSong(song);
+            }
         } catch (IOException ex)
         {
             showAlert("IOException", ex.getMessage());
@@ -229,7 +227,10 @@ public class FXMLDocumentController implements Initializable, Observer
         Playlist playlist = tblPlaylist.getSelectionModel().getSelectedItem();
         try
         {
-            model.deletPlaylist(playlist);
+            if (playlist != null)
+            {
+                model.deletPlaylist(playlist);
+            }
 
         } catch (IOException ex)
         {
@@ -243,7 +244,10 @@ public class FXMLDocumentController implements Initializable, Observer
         Song song = tblSong.getSelectionModel().getSelectedItem();
         try
         {
-            loadSongDataView(song);
+            if (song != null)
+            {
+                loadSongDataView(song);
+            }
         } catch (IOException ex)
         {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
@@ -274,7 +278,7 @@ public class FXMLDocumentController implements Initializable, Observer
 
         }
 
-        if (event.getClickCount() == 2)
+        if (event.getClickCount() == 2 && playlist != null)
         {
             try
             {
@@ -295,8 +299,11 @@ public class FXMLDocumentController implements Initializable, Observer
 
         try
         {
+            if (songToAdd != null && playlistToAddTo != null)
+            {
 
-            model.addSongToPlaylist(songToAdd, playlistToAddTo);
+                model.addSongToPlaylist(songToAdd, playlistToAddTo);
+            }
         } catch (IOException ex)
         {
             showAlert("IOException", ex.getMessage());
@@ -390,6 +397,7 @@ public class FXMLDocumentController implements Initializable, Observer
     {
         // TODO Display the New/Edit gui to enter a name to the new playlist
         Stage primStage = (Stage) tblSong.getScene().getWindow();
+
         //mvc pattern til fxml sti
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/mytunes/GUI/VIEW/NewEditPlaylistView.fxml"));
 
@@ -417,7 +425,10 @@ public class FXMLDocumentController implements Initializable, Observer
     private void handleEditPlaylist(ActionEvent event) throws IOException
     {
         Playlist playlist = tblPlaylist.getSelectionModel().getSelectedItem();
-        showNewEditPlaylistDialog(playlist);
+        if (playlist != null)
+        {
+            showNewEditPlaylistDialog(playlist);
+        }
 
     }
 
@@ -540,5 +551,6 @@ public class FXMLDocumentController implements Initializable, Observer
     public void update(Observable o, Object arg)
     {
         bindPlayerToGUI();
+
     }
 }

@@ -27,6 +27,7 @@ public class MyTunes extends Application
         
         stage.setScene(scene);
         stage.show();
+      //  stage.resizableProperty().set(false);
        
     }
 
