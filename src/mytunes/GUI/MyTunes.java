@@ -5,6 +5,8 @@
  */
 package mytunes.GUI;
 
+import java.util.Timer;
+import java.util.TimerTask;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,18 +19,20 @@ import javafx.stage.Stage;
  */
 public class MyTunes extends Application
 {
-    
+
     @Override
     public void start(Stage stage) throws Exception
     {
         Parent root = FXMLLoader.load(getClass().getResource("VIEW/FXMLDocument.fxml"));
-        
+
         Scene scene = new Scene(root);
+
         
+
         stage.setScene(scene);
         stage.show();
-      //  stage.resizableProperty().set(false);
-       
+        stage.resizableProperty().set(false);
+
     }
 
     /**
@@ -38,5 +42,5 @@ public class MyTunes extends Application
     {
         launch(args);
     }
-    
+
 }

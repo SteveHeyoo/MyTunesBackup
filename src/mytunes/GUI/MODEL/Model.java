@@ -300,7 +300,6 @@ public class Model extends Observable
     {
         timeline = new Timeline(new KeyFrame(Duration.millis((song.getDuration() * 1000)), ae -> playNextSong("next")));
         timeline.play();
-        
 
         runningDelay = true;
     }
@@ -377,8 +376,8 @@ public class Model extends Observable
             } else
             {
                 nextSong = getNextSongInCurrentList(songPlaying, "repeat");
-            }                  
-            
+            }
+
         } catch (IOException ex)
         {
             ex.printStackTrace();
@@ -614,6 +613,12 @@ public class Model extends Observable
         showPlaylistSongs(playList.getId());
 
         //mMgr.
+    }
+
+    public void seekSong(double mouseClickedWidth)
+    {
+        Duration newDuration = mTPlayer.getMediaPlayer().getTotalDuration().multiply(mouseClickedWidth / 200);
+        mTPlayer.getMediaPlayer().seek(newDuration);
     }
 
 }

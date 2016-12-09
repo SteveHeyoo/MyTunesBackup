@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -43,6 +45,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import mytunes.BE.Playlist;
 import mytunes.BE.Song;
@@ -257,8 +260,6 @@ public class FXMLDocumentController implements Initializable, Observer
     {
         Playlist playlist = tblPlaylist.getSelectionModel().getSelectedItem();
 
-        
-        
         if (playlist != null)
         {
             int playlistId = playlist.getId();
@@ -535,7 +536,7 @@ public class FXMLDocumentController implements Initializable, Observer
     @FXML
     private void handleDeleteSongInPlaylist(ActionEvent event)
     {
-        if(listPlaylistSong.getSelectionModel().getSelectedItem() == null)
+        if (listPlaylistSong.getSelectionModel().getSelectedItem() == null)
         {
             return;
         }
@@ -566,5 +567,15 @@ public class FXMLDocumentController implements Initializable, Observer
     {
         bindPlayerToGUI();
 
+    }
+
+    @FXML
+    private void handleSeekDuration(MouseEvent event)
+    {
+        double mouseClickedWidth = event.getX();
+       
+        model.seekSong(mouseClickedWidth);
+        
+        
     }
 }
