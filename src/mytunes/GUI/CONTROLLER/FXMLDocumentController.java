@@ -79,8 +79,6 @@ public class FXMLDocumentController implements Initializable, Observer
 
     @FXML
     private ListView<Song> listPlaylistSong;
-    
-
 
     @FXML
     private TextField txtFieldSearch;
@@ -258,14 +256,15 @@ public class FXMLDocumentController implements Initializable, Observer
     private void handleShowPlaylistSongs(MouseEvent event)
     {
         Playlist playlist = tblPlaylist.getSelectionModel().getSelectedItem();
-        model.setCurrentPlaylist(playlist);
-        int index = tblPlaylist.getSelectionModel().getSelectedIndex();
-        int playlistId = playlist.getId();
+
+        
+        
         if (playlist != null)
         {
-
+            int playlistId = playlist.getId();
             try
             {
+                model.setCurrentPlaylist(playlist);
                 model.showPlaylistSongs(playlistId);
 
             } catch (IOException ex)
@@ -375,12 +374,12 @@ public class FXMLDocumentController implements Initializable, Observer
     @FXML
     private void handlePlayButton(ActionEvent event)
     {
-        if(tblSong.getSelectionModel().getSelectedItem() == null || listPlaylistSong.getSelectionModel().getSelectedItem() == null)
+        if (tblSong.getSelectionModel().getSelectedItem() == null || listPlaylistSong.getSelectionModel().getSelectedItem() == null)
         {
             return;
         }
-        
-        model.setCurrentListControl(currentControlList);        
+
+        model.setCurrentListControl(currentControlList);
         model.playSongButtonClick();
         model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue() / 100);
 
@@ -450,7 +449,7 @@ public class FXMLDocumentController implements Initializable, Observer
     @FXML
     private void handlePlayNextSong(ActionEvent event)
     {
-        if(tblSong.getSelectionModel().getSelectedItem() == null || listPlaylistSong.getSelectionModel().getSelectedItem() == null)
+        if (tblSong.getSelectionModel().getSelectedItem() == null || listPlaylistSong.getSelectionModel().getSelectedItem() == null)
         {
             return;
         }
@@ -462,7 +461,7 @@ public class FXMLDocumentController implements Initializable, Observer
     @FXML
     private void handlePlayPreviousSong(ActionEvent event)
     {
-        if(tblSong.getSelectionModel().getSelectedItem() == null || listPlaylistSong.getSelectionModel().getSelectedItem() == null)
+        if (tblSong.getSelectionModel().getSelectedItem() == null || listPlaylistSong.getSelectionModel().getSelectedItem() == null)
         {
             return;
         }
@@ -531,8 +530,6 @@ public class FXMLDocumentController implements Initializable, Observer
     {
         System.out.println("Drag&Dropped a item!");
     }
-
-    
 
     @FXML
     private void handleDeleteSongInPlaylist(ActionEvent event)
