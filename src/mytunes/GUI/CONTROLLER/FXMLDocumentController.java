@@ -13,8 +13,6 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -41,13 +39,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import mytunes.BE.Playlist;
 import mytunes.BE.Song;
 import mytunes.GUI.MODEL.Model;
@@ -160,8 +156,12 @@ public class FXMLDocumentController implements Initializable, Observer
         
         JFileChooser chooser = new JFileChooser();
         chooser.setMultiSelectionEnabled(true);
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("MP3 Files(*.mp3)", "mp3");
+        chooser.setFileFilter(filter);
         chooser.showOpenDialog(null);
+        
         File[] files = chooser.getSelectedFiles();
+        
         
         if (files != null)
         {
