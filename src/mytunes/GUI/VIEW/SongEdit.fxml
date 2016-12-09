@@ -9,9 +9,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" prefHeight="308.0" prefWidth="488.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mytunes.GUI.CONTROLLER.SongEditController">
+<AnchorPane id="AnchorPane" prefHeight="266.0" prefWidth="458.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mytunes.GUI.CONTROLLER.SongEditController">
    <children>
-      <ImageView fitHeight="308.0" fitWidth="491.0" pickOnBounds="true">
+      <ImageView fitHeight="266.0" fitWidth="474.0" pickOnBounds="true">
          <image>
             <Image url="@BG_GUI.png" />
          </image>
@@ -23,16 +23,15 @@
       </Text>
       <Text fill="WHITE" layoutX="14.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Title:" />
       <Text fill="WHITE" layoutX="14.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Artist:" />
-      <Text fill="WHITE" layoutX="20.0" layoutY="244.0" strokeType="OUTSIDE" strokeWidth="0.0" text="File:" />
+      <Text fill="WHITE" layoutX="14.0" layoutY="206.0" strokeType="OUTSIDE" strokeWidth="0.0" text="File:" />
       <Text fill="WHITE" layoutX="14.0" layoutY="160.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Category:" />
-      <Text fill="WHITE" layoutX="14.0" layoutY="206.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Time:" />
       <TextField fx:id="txtTitle" layoutX="91.0" layoutY="48.0" prefHeight="31.0" prefWidth="300.0" />
       <TextField fx:id="txtArtist" layoutX="91.0" layoutY="89.0" prefHeight="31.0" prefWidth="300.0" />
       <TextField fx:id="txtTime" editable="false" layoutX="91.0" layoutY="185.0" prefHeight="31.0" prefWidth="300.0" visible="false" />
-      <TextField fx:id="txtFile" layoutX="91.0" layoutY="223.0" prefHeight="31.0" prefWidth="300.0" />
+      <TextField fx:id="txtFile" layoutX="91.0" layoutY="185.0" prefHeight="31.0" prefWidth="300.0" />
       <ComboBox layoutX="91.0" layoutY="139.0" prefWidth="150.0" />
-      <JFXButton layoutX="327.0" layoutY="268.0" onAction="#handleBtnCancel" ripplerFill="RED" text="Cancel" textFill="WHITE" />
-      <JFXButton layoutX="268.0" layoutY="268.0" onAction="#handleSaveSong" ripplerFill="RED" text="Save" textFill="WHITE" />
-      <JFXButton layoutX="410.0" layoutY="223.0" onAction="#handleBtnChoose" ripplerFill="RED" text="Choose" textFill="WHITE" />
+      <JFXButton layoutX="327.0" layoutY="223.0" onAction="#handleBtnCancel" ripplerFill="RED" text="Cancel" textFill="WHITE" />
+      <JFXButton layoutX="268.0" layoutY="223.0" onAction="#handleSaveSong" ripplerFill="RED" text="Save" textFill="WHITE" />
+      <JFXButton layoutX="399.0" layoutY="185.0" onAction="#handleBtnChoose" ripplerFill="RED" text="Choose" textFill="WHITE" />
    </children>
 </AnchorPane>

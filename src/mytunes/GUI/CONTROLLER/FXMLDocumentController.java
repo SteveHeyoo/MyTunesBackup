@@ -84,6 +84,8 @@ public class FXMLDocumentController implements Initializable, Observer
 
     @FXML
     private ListView<Song> listPlaylistSong;
+    
+
 
     @FXML
     private TextField txtFieldSearch;
@@ -507,10 +509,7 @@ public class FXMLDocumentController implements Initializable, Observer
         System.out.println("Drag&Dropped a item!");
     }
 
-    @FXML
-    private void handleQuitProgram(ActionEvent event)
-    {
-    }
+    
 
     @FXML
     private void handleDeleteSongInPlaylist(ActionEvent event)

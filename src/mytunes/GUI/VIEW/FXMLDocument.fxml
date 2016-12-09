@@ -23,7 +23,6 @@
             <Image url="@BG_GUI.png" />
          </image>
       </ImageView>
-      <JFXButton layoutX="1013.0" layoutY="608.0" onAction="#handleQuitProgram" ripplerFill="RED" text="Close" textFill="WHITE" />
       <JFXButton layoutX="736.0" layoutY="608.0" onAction="#handleSongEdit" ripplerFill="RED" text="Edit" textFill="WHITE" />
       <JFXButton layoutX="671.0" layoutY="608.0" onAction="#handleNewSong" ripplerFill="RED" text="New" textFill="WHITE" />
       <JFXButton layoutX="801.0" layoutY="608.0" onAction="#handleTblViewSongsDelete" ripplerFill="RED" text="Delete" textFill="WHITE" />
@@ -57,7 +56,7 @@
             <Font name="System Bold" size="15.0" />
          </font>
       </Text>
-      <TextField fx:id="txtFieldSearch" onKeyReleased="#handleSearch3" layoutX="834.0" layoutY="20.0" prefHeight="31.0" prefWidth="244.0" />
+      <TextField fx:id="txtFieldSearch" layoutX="834.0" layoutY="20.0" onKeyReleased="#handleSearch3" prefHeight="31.0" prefWidth="244.0" />
       <JFXButton layoutX="574.0" layoutY="221.0" onAction="#handleAddSongToPlaylist" prefHeight="73.0" prefWidth="78.0" ripplerFill="RED" text="«  " textFill="WHITE">
          <font>
             <Font size="32.0" />
@@ -79,7 +78,7 @@
             <Font name="System Bold" size="24.0" />
          </font>
       </Text>
-      <Text fill="WHITE" layoutX="786.0" layoutY="41.0"  strokeType="OUTSIDE" strokeWidth="0.0" text="Filter:" wrappingWidth="47.6708984375">
+      <Text fill="WHITE" layoutX="786.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Filter:" wrappingWidth="47.6708984375">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
