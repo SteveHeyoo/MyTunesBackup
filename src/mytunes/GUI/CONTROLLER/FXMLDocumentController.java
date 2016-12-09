@@ -374,26 +374,27 @@ public class FXMLDocumentController implements Initializable, Observer
     @FXML
     private void handlePlayButton(ActionEvent event)
     {
-        if (tblSong.getSelectionModel().getSelectedItem() == null || listPlaylistSong.getSelectionModel().getSelectedItem() == null)
+        if (tblSong.getSelectionModel().getSelectedItem() != null || listPlaylistSong.getSelectionModel().getSelectedItem() != null)
         {
-            return;
+            model.setCurrentListControl(currentControlList);
+            model.playSongButtonClick();
+            model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue() / 100);
+
+            try
+            {
+                ListView<Song> playlist = (ListView) currentControlList;
+                model.setIndex(playlist.getSelectionModel().getSelectedIndex());
+
+            } 
+            catch (ClassCastException c)
+            {
+                TableView<Song> playlist = (TableView) currentControlList;
+                model.setIndex(playlist.getSelectionModel().getSelectedIndex());
+
+            }
         }
 
-        model.setCurrentListControl(currentControlList);
-        model.playSongButtonClick();
-        model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue() / 100);
-
-        try
-        {
-            ListView<Song> playlist = (ListView) currentControlList;
-            model.setIndex(playlist.getSelectionModel().getSelectedIndex());
-
-        } catch (ClassCastException c)
-        {
-            TableView<Song> playlist = (TableView) currentControlList;
-            model.setIndex(playlist.getSelectionModel().getSelectedIndex());
-
-        }
+        
         //btnPlaySong.setText("Pause");
     }
 
@@ -449,24 +450,24 @@ public class FXMLDocumentController implements Initializable, Observer
     @FXML
     private void handlePlayNextSong(ActionEvent event)
     {
-        if (tblSong.getSelectionModel().getSelectedItem() == null || listPlaylistSong.getSelectionModel().getSelectedItem() == null)
+        if (tblSong.getSelectionModel().getSelectedItem() != null || listPlaylistSong.getSelectionModel().getSelectedItem() != null)
         {
-            return;
-        }
-        model.pressNextButton();
-        model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue() / 100);
+            model.pressNextButton();
+            model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue() / 100);
 
+        }
+        
     }
 
     @FXML
     private void handlePlayPreviousSong(ActionEvent event)
     {
-        if (tblSong.getSelectionModel().getSelectedItem() == null || listPlaylistSong.getSelectionModel().getSelectedItem() == null)
+        if (tblSong.getSelectionModel().getSelectedItem() != null || listPlaylistSong.getSelectionModel().getSelectedItem() != null)
         {
-            return;
+            model.pressPreviousButton();
+            model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue() / 100);
         }
-        model.pressPreviousButton();
-        model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue() / 100);
+        
     }
 
     private void handleRadioReapetSong(ActionEvent event)
