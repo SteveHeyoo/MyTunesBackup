@@ -47,6 +47,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.JFileChooser;
 import mytunes.BE.Playlist;
 import mytunes.BE.Song;
 import mytunes.GUI.MODEL.Model;
@@ -137,6 +138,7 @@ public class FXMLDocumentController implements Initializable, Observer
     @FXML
     private void handleNewSong(ActionEvent event)
     {
+        /*
         FileChooser fileChooser = new FileChooser();
         FileChooser.ExtensionFilter mp3Filter = new FileChooser.ExtensionFilter("MP3 Files(*.mp3)", "*.mp3");
         fileChooser.getExtensionFilters().add(mp3Filter);
@@ -154,6 +156,29 @@ public class FXMLDocumentController implements Initializable, Observer
             {
                 showAlert("UnsupportedAudioFileException", ex.getMessage());
             }
+        }*/
+        
+        JFileChooser chooser = new JFileChooser();
+        chooser.setMultiSelectionEnabled(true);
+        chooser.showOpenDialog(null);
+        File[] files = chooser.getSelectedFiles();
+        
+        if (files != null)
+        {
+            for (int i = 0; i < files.length; i++)
+            {
+                try
+                {
+                    model.createNewSong(files[i]);
+                } catch (IOException iOEx)
+                {
+                    showAlert("IOException", iOEx.getMessage());
+                } catch (UnsupportedAudioFileException ex)
+                {
+                    showAlert("UnsupportedAudioFileException", ex.getMessage());
+                }
+            }
+            
         }
     }
 
