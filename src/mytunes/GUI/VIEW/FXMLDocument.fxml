@@ -83,7 +83,7 @@
             <Font name="System Bold" size="15.0" />
          </font>
       </Text>
-      <JFXProgressBar fx:id="progressbarDuration" layoutX="358.0" layoutY="44.0" onMouseClicked="#handleSeekDuration" progress="0.0" scaleX="2.0">
+      <JFXProgressBar fx:id="progressbarDuration" layoutX="358.0" layoutY="44.0" onMouseClicked="#handleSeekDuration" progress="0.0" scaleX="2.0" scaleY="2.0">
          <effect>
             <ColorAdjust contrast="1.0" hue="-0.82" />
          </effect></JFXProgressBar>
