@@ -25,6 +25,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -42,6 +43,7 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -57,9 +59,9 @@ import mytunes.GUI.MODEL.Model;
  */
 public class MainController implements Initializable, Observer
 {
-
+    
     private Model model;
-
+    
     @FXML
     private TableView<Playlist> tblPlaylist;
     @FXML
@@ -68,7 +70,7 @@ public class MainController implements Initializable, Observer
     private TableColumn<Playlist, Integer> columnPlaylistNumberOfSongs;
     @FXML
     private TableColumn<Playlist, String> columnPlaylistTotalDuration;
-
+    
     @FXML
     private TableView<Song> tblSong;
     @FXML
@@ -79,40 +81,44 @@ public class MainController implements Initializable, Observer
     private TableColumn<Song, String> columnTime;
     @FXML
     private TableColumn<?, ?> columnCategory;
-
+    
     @FXML
     private ListView<Song> listPlaylistSong;
-
+    
     @FXML
     private TextField txtFieldSearch;
-
+    
     @FXML
     private Slider volumeSlide;
-
+    
     private Song currentSong;
     private Control currentControlList;
     @FXML
     private Label lblDuration;
     @FXML
     private JFXProgressBar progressbarDuration;
-    
+    @FXML
+    private Label lblTotalDuration;
+    @FXML
+    private Label lblSongPlaying;
+
     /**
-     * Contructor of controller
-     * Sets this controller as observer for our model.
+     * Contructor of controller Sets this controller as observer for our model.
      */
     public MainController()
     {
         model = Model.getInstance();
         model.addObserver(this);
     }
-
+    
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
         volumeSlide.setValue(100);
         dataBind();
-
+        
     }
+
     /**
      * Databind our columns to our Song and Playlists using Lambda expressions.
      * Adds a event listener to our volume slider.
@@ -130,7 +136,7 @@ public class MainController implements Initializable, Observer
         tblSong.setItems(model.getAllSongs());
         tblPlaylist.setItems(model.getAllPlaylists());
         listPlaylistSong.setItems(model.getAllSongsByPlaylistId());
-
+        
         volumeSlide.valueProperty().addListener((javafx.beans.Observable observable)
                 -> 
                 {
@@ -140,9 +146,12 @@ public class MainController implements Initializable, Observer
                     }
         });
     }
+
     /**
-     * Using the JFileChooser to choose wich files to be added to our songs table.
-     * @param event 
+     * Using the JFileChooser to choose wich files to be added to our songs
+     * table.
+     *
+     * @param event
      */
     @FXML
     private void handleNewSong(ActionEvent event)
@@ -152,9 +161,9 @@ public class MainController implements Initializable, Observer
         FileNameExtensionFilter filter = new FileNameExtensionFilter("MP3 Files(*.mp3)", "mp3");
         chooser.setFileFilter(filter);
         chooser.showOpenDialog(null);
-
+        
         File[] files = chooser.getSelectedFiles();
-
+        
         if (files != null)
         {
             for (int i = 0; i < files.length; i++)
@@ -170,13 +179,15 @@ public class MainController implements Initializable, Observer
                     showAlert("UnsupportedAudioFileException", ex.getMessage());
                 }
             }
-
+            
         }
     }
+
     /**
      * Loads the view to edit our selected Song.
+     *
      * @param song
-     * @throws IOException 
+     * @throws IOException
      */
     private void loadSongDataView(Song song) throws IOException
     {
@@ -189,21 +200,23 @@ public class MainController implements Initializable, Observer
         // Fetches controller from patient view
         SongEditController songEditController
                 = loader.getController();
-
+        
         songEditController.setSong(song);
 
         // Sets new stage as modal window
         Stage stageSongEdit = new Stage();
         stageSongEdit.setScene(new Scene(root));
-
+        
         stageSongEdit.initModality(Modality.WINDOW_MODAL);
         stageSongEdit.initOwner(primStage);
-
+        
         stageSongEdit.show();
     }
+
     /**
      * Handles the mouse event of the All-songs table
-     * @param event 
+     *
+     * @param event
      */
     @FXML
     private void handleTblViewMouseClick(MouseEvent event)
@@ -217,31 +230,33 @@ public class MainController implements Initializable, Observer
             model.setCurrentListControl(currentControlList);
             model.playSong(currentSong);
             model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue() / 100);
-
+            
         }
-
+        
     }
+
     /**
      * Handles the delete button on our all-songs table.
-     * @param event 
+     *
+     * @param event
      */
     @FXML
     private void handleTblViewSongsDelete(ActionEvent event)
     {
-
+        
         Song song = tblSong.getSelectionModel().getSelectedItem();
         try
         {
             if (song != null)
             {
-
+                
                 Alert alert = new Alert(AlertType.CONFIRMATION);
                 alert.setTitle("Delete confirmation");
                 alert.setHeaderText("Confirm removing");
                 alert.setContentText("You really really want to delete: " + song.toString() + "?");
-
+                
                 alert.showAndWait();
-
+                
                 if (alert.getResult() == ButtonType.OK)
                 {
                     model.deleteSong(song);
@@ -255,20 +270,24 @@ public class MainController implements Initializable, Observer
             showAlert("IOException", ex.getMessage());
         }
     }
+
     /**
      * Handles the new button in the Playlist table.
+     *
      * @param event
-     * @throws IOException 
+     * @throws IOException
      */
     @FXML
     private void handleNewPlaylist(ActionEvent event) throws IOException
     {
         showNewEditPlaylistDialog(null);
-
+        
     }
+
     /**
      * Handles the delete button in the playlist table.
-     * @param event 
+     *
+     * @param event
      */
     @FXML
     private void handleDeletePlayList(ActionEvent event)
@@ -282,26 +301,27 @@ public class MainController implements Initializable, Observer
                 alert.setTitle("Delete confirmation");
                 alert.setHeaderText("Confirm removing");
                 alert.setContentText("You really really want to delete: " + playlist.getName() + "?");
-
+                
                 alert.showAndWait();
                 if (alert.getResult() == ButtonType.OK)
                 {
-                model.deletPlaylist(playlist);
-                }
-                else
+                    model.deletPlaylist(playlist);
+                } else
                 {
                     return;
                 }
             }
-
+            
         } catch (IOException ex)
         {
             showAlert("IOException", ex.getMessage());
         }
     }
+
     /**
      * Handles the edit button in all-songs table.
-     * @param event 
+     *
+     * @param event
      */
     @FXML
     private void handleSongEdit(ActionEvent event)
@@ -318,15 +338,17 @@ public class MainController implements Initializable, Observer
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
     /**
      * Handles the click event to show songs on the seleceted playlist.
-     * @param event 
+     *
+     * @param event
      */
     @FXML
     private void handleShowPlaylistSongs(MouseEvent event)
     {
         Playlist playlist = tblPlaylist.getSelectionModel().getSelectedItem();
-
+        
         if (playlist != null)
         {
             int playlistId = playlist.getId();
@@ -334,7 +356,7 @@ public class MainController implements Initializable, Observer
             {
                 model.setCurrentPlaylist(playlist);
                 model.showPlaylistSongs(playlistId);
-
+                
             } catch (IOException ex)
             {
                 showAlert("IOException", ex.getMessage());
@@ -342,9 +364,9 @@ public class MainController implements Initializable, Observer
             {
                 showAlert("UnsupportedAudioFileException", ex.getMessage());
             }
-
+            
         }
-
+        
         if (event.getClickCount() == 2 && playlist != null)
         {
             try
@@ -356,9 +378,11 @@ public class MainController implements Initializable, Observer
             }
         }
     }
+
     /**
      * Handles the "add" button, wich adds a song to the selected playlist.
-     * @param event 
+     *
+     * @param event
      */
     @FXML
     private void handleAddSongToPlaylist(ActionEvent event)
@@ -366,12 +390,12 @@ public class MainController implements Initializable, Observer
         Song songToAdd = tblSong.getSelectionModel().getSelectedItem();
         Playlist playlistToAddTo = tblPlaylist.getSelectionModel().getSelectedItem();
         int plIndexNum = tblPlaylist.getSelectionModel().getSelectedIndex();
-
+        
         try
         {
             if (songToAdd != null && playlistToAddTo != null)
             {
-
+                
                 model.addSongToPlaylist(songToAdd, playlistToAddTo);
             }
         } catch (IOException ex)
@@ -383,9 +407,12 @@ public class MainController implements Initializable, Observer
         }
         tblPlaylist.getSelectionModel().clearAndSelect(plIndexNum);
     }
+
     /**
-     * Handles the mouse event on our Listview. The view that displays songs on a selected playlist.
-     * @param event 
+     * Handles the mouse event on our Listview. The view that displays songs on
+     * a selected playlist.
+     *
+     * @param event
      */
     @FXML
     private void handleSongsOnPlaylistPlay(MouseEvent event)
@@ -401,15 +428,18 @@ public class MainController implements Initializable, Observer
             model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue() / 100);
         }
     }
+
     /**
-     * Our well selected method-name, to handle the search function. Or filter songs.
-     * @param event 
+     * Our well selected method-name, to handle the search function. Or filter
+     * songs.
+     *
+     * @param event
      */
     @FXML
     private void handleSearch3(KeyEvent event)
     {
         String query = txtFieldSearch.getText().trim();
-
+        
         List<Song> searchResult = null;
         try
         {
@@ -420,39 +450,45 @@ public class MainController implements Initializable, Observer
         }
         model.setSongs(searchResult);
     }
+
     /**
      * The arrow button to move a song up in the list.
-     * @param event 
+     *
+     * @param event
      */
     @FXML
     private void handleMoveSongUp(ActionEvent event)
     {
         Song songToMoveUp = listPlaylistSong.getSelectionModel().getSelectedItem();
-
+        
         if (songToMoveUp != null)
         {
             listPlaylistSong.getSelectionModel().clearAndSelect(model.moveSongUp(songToMoveUp) - 1);
-
+            
         }
     }
+
     /**
      * The arrow button to move a song down in the list.
-     * @param event 
+     *
+     * @param event
      */
     @FXML
     private void handleMoveSongDown(ActionEvent event)
     {
         Song songToMoveDown = listPlaylistSong.getSelectionModel().getSelectedItem();
         System.out.println(songToMoveDown);
-
+        
         if (songToMoveDown != null)
         {
             listPlaylistSong.getSelectionModel().clearAndSelect(model.moveSongDown(songToMoveDown) + 1);
         }
     }
+
     /**
      * Handles the play/pause button.
-     * @param event 
+     *
+     * @param event
      */
     @FXML
     private void handlePlayButton(ActionEvent event)
@@ -462,24 +498,27 @@ public class MainController implements Initializable, Observer
             model.setCurrentListControl(currentControlList);
             model.playSongButtonClick();
             model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue() / 100);
-
+            
             try
             {
                 ListView<Song> playlist = (ListView) currentControlList;
                 model.setIndex(playlist.getSelectionModel().getSelectedIndex());
-
+                
             } catch (ClassCastException c)
             {
                 TableView<Song> playlist = (TableView) currentControlList;
                 model.setIndex(playlist.getSelectionModel().getSelectedIndex());
-
+                
             }
         }
     }
+
     /**
-     * Method to show a new view, to either save a new playlist, or save a edited playlist.
+     * Method to show a new view, to either save a new playlist, or save a
+     * edited playlist.
+     *
      * @param playlist
-     * @throws IOException 
+     * @throws IOException
      */
     private void showNewEditPlaylistDialog(Playlist playlist) throws IOException
     {
@@ -488,7 +527,7 @@ public class MainController implements Initializable, Observer
 
         //mvc pattern to fxml path
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/mytunes/GUI/VIEW/NewEditPlaylistView.fxml"));
-
+        
         Parent root = loader.load();
 
         //Fethes controller
@@ -497,7 +536,7 @@ public class MainController implements Initializable, Observer
         if (playlist != null)
         {
             newEditController.setPlaylistToEdit(playlist);
-
+            
         }
 
         // sets new stage as modal window
@@ -506,13 +545,15 @@ public class MainController implements Initializable, Observer
         stageNewEditPlaylist.initModality(Modality.WINDOW_MODAL);
         stageNewEditPlaylist.initOwner(primStage);
         stageNewEditPlaylist.setResizable(false);
-
+        
         stageNewEditPlaylist.show();
     }
+
     /**
      * Button to edit a playlist
+     *
      * @param event
-     * @throws IOException 
+     * @throws IOException
      */
     @FXML
     private void handleEditPlaylist(ActionEvent event) throws IOException
@@ -522,12 +563,14 @@ public class MainController implements Initializable, Observer
         {
             showNewEditPlaylistDialog(playlist);
         }
-
+        
     }
+
     /**
      * Static method to show the exception dialog.
+     *
      * @param header
-     * @param body 
+     * @param body
      */
     public static void showAlert(String header, String body)
     {
@@ -535,12 +578,14 @@ public class MainController implements Initializable, Observer
         alert.setTitle("Warning Dialog");
         alert.setHeaderText(header);
         alert.setContentText(body);
-
+        
         alert.showAndWait();
     }
+
     /**
      * Next button.
-     * @param event 
+     *
+     * @param event
      */
     @FXML
     private void handlePlayNextSong(ActionEvent event)
@@ -549,13 +594,15 @@ public class MainController implements Initializable, Observer
         {
             model.pressNextButton();
             model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue() / 100);
-
+            
         }
-
+        
     }
+
     /**
      * Previous button
-     * @param event 
+     *
+     * @param event
      */
     @FXML
     private void handlePlayPreviousSong(ActionEvent event)
@@ -565,16 +612,19 @@ public class MainController implements Initializable, Observer
             model.pressPreviousButton();
             model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue() / 100);
         }
-
+        
     }
+
     /**
-     * Method to show current time status of the song, and show how long the song is played in the progressbar.
+     * Method to show current time status of the song, and show how long the
+     * song is played in the progressbar.
      */
     private void bindPlayerToGUI()
     {
         // Binds the currentTimeProperty to a StringProperty on the label
         // The computeValue() calculates minutes and seconds from the
         // CurrentTimeProperty, which is a javafx Duration type.
+        lblDuration.setAlignment(Pos.CENTER_RIGHT);
         lblDuration.textProperty().bind(
                 new StringBinding()
         {
@@ -585,12 +635,12 @@ public class MainController implements Initializable, Observer
                 // the currentTimeProperty
                 super.bind(model.getmTPlayer().getMediaPlayer().currentTimeProperty());
             }
-
+            
             @Override
             protected String computeValue()
             {
-
-                String form = String.format("%d min, %d sec",
+                
+                String form = String.format("%d:%d",
                         TimeUnit.MILLISECONDS.toMinutes((long) model.getmTPlayer().getMediaPlayer().getCurrentTime().toMillis()),
                         TimeUnit.MILLISECONDS.toSeconds((long) model.getmTPlayer().getMediaPlayer().getCurrentTime().toMillis())
                         - TimeUnit.MINUTES.toSeconds(
@@ -599,11 +649,34 @@ public class MainController implements Initializable, Observer
                                 )
                         )
                 );
-
+                
                 return form;
             }
         });
-
+        lblTotalDuration.setAlignment(Pos.CENTER_LEFT);
+        lblTotalDuration.textProperty().bind(new StringBinding()
+        {
+            {
+                super.bind(model.getmTPlayer().getMediaPlayer().currentTimeProperty());
+            }
+            
+            @Override
+            protected String computeValue()
+            {
+                String form = String.format("%d:%d",
+                        TimeUnit.MILLISECONDS.toMinutes((long) model.getmTPlayer().getMediaPlayer().getTotalDuration().toMillis()),
+                        TimeUnit.MILLISECONDS.toSeconds((long) model.getmTPlayer().getMediaPlayer().getTotalDuration().toMillis())
+                        - TimeUnit.MINUTES.toSeconds(
+                                TimeUnit.MILLISECONDS.toMinutes(
+                                        (long) model.getmTPlayer().getMediaPlayer().getTotalDuration().toMillis()
+                                )
+                        )
+                );
+                
+                return form;
+            }
+        });
+        
         progressbarDuration.progressProperty().bind(new ObjectBinding<Number>()
         {
             {
@@ -611,19 +684,30 @@ public class MainController implements Initializable, Observer
                 progressbarDuration.maxWidthProperty().set(model.getmTPlayer().getMediaPlayer().getTotalDuration().toMillis());
                 //  progressbarDuration.maxWidthProperty().set(model.getmTPlayer().getMediaPlayer().getTotalDuration().toMillis());
             }
-
+            
             @Override
             protected Number computeValue()
             {
-
+                
                 return (model.getmTPlayer().getMediaPlayer().getCurrentTime().toMillis() / model.getmTPlayer().getMediaPlayer().getTotalDuration().toMillis());
-
+                
+            }
+        });
+        lblSongPlaying.setAlignment(Pos.CENTER);
+        lblSongPlaying.textProperty().bind(new StringBinding()
+        {
+            @Override
+            protected String computeValue()
+            {
+                return "("+model.getSongPlaying().toString()+")... Is playing";
             }
         });
     }
+
     /**
      * Button to delete a song in the listview
-     * @param event 
+     *
+     * @param event
      */
     @FXML
     private void handleDeleteSongInPlaylist(ActionEvent event)
@@ -647,29 +731,36 @@ public class MainController implements Initializable, Observer
         tblPlaylist.getSelectionModel().clearAndSelect(plIndexNum);
         listPlaylistSong.getSelectionModel().clearAndSelect(selectedSongIndex);
     }
+
     /**
      * Radio button.
-     * @param event 
+     *
+     * @param event
      */
     @FXML
     private void handleRadioRepeatSong(ActionEvent event)
     {
         model.setRepeatSong(!model.getRepeatSong());
     }
+
     /**
-     * The method that is called when the NotifyObservers() is called in the Model.
+     * The method that is called when the NotifyObservers() is called in the
+     * Model.
+     *
      * @param o
-     * @param arg 
+     * @param arg
      */
     @Override
     public void update(Observable o, Object arg)
     {
         bindPlayerToGUI();
-
+        
     }
+
     /**
      * Drag&Drop function.
-     * @param event 
+     *
+     * @param event
      */
     @FXML
     private void handleDragDropped(DragEvent event)
@@ -696,9 +787,11 @@ public class MainController implements Initializable, Observer
         event.setDropCompleted(success);
         event.consume();
     }
+
     /**
      * Drag&Drop function.
-     * @param event 
+     *
+     * @param event
      */
     @FXML
     private void handleDragOver(DragEvent event)
@@ -712,28 +805,32 @@ public class MainController implements Initializable, Observer
             event.consume();
         }
     }
+
     /**
      * Mouse event to handle the seek duration
-     * @param event 
+     *
+     * @param event
      */
     @FXML
     private void handleSeekDurationDragged(MouseEvent event)
     {
         double mouseClickedWidth = event.getX();
         double progressbarWidth = progressbarDuration.getWidth();
-
+        
         model.seekSong((mouseClickedWidth / progressbarWidth));
     }
+
     /**
      * Mouse event to handle the seek duration.
-     * @param event 
+     *
+     * @param event
      */
     @FXML
     private void handleSeekDurationPressed(MouseEvent event)
     {
         double mouseClickedWidth = event.getX();
         double progressbarWidth = progressbarDuration.getWidth();
-
+        
         model.seekSong((mouseClickedWidth / progressbarWidth));
     }
 }
