@@ -118,6 +118,7 @@ public class Model extends Observable
         return songs;
     }
 
+    
     /**
      * Sets currentListControl
      *
@@ -138,6 +139,16 @@ public class Model extends Observable
         currentPlaylist = playlist;
     }
 
+    public List<Song> getCurrentList()
+    {
+        return currentList;
+    }
+
+    public void setCurrentList(List<Song> currentList)
+    {
+        this.currentList = currentList;
+    }
+    
     /**
      * sets current index
      *
@@ -148,6 +159,15 @@ public class Model extends Observable
         currentIndex = index;
     }
 
+    /**
+     * Returns current index.
+     * @return 
+     */
+    public int getCurrentIndex()
+    {
+        return currentIndex;
+    }
+    
     /**
      * sets repeat song boolean
      *
@@ -395,6 +415,7 @@ public class Model extends Observable
             TableView<Song> playlist = (TableView) currentListControl;
             playlist.getSelectionModel().clearAndSelect(currentIndex);
         }
+        
         double vol = mTPlayer.getMediaPlayer().getVolume();
         playTheSong(nextSong);
 
@@ -411,22 +432,7 @@ public class Model extends Observable
     public Song getNextSongInCurrentList(Song currentSong, String previousNextOrRepeat) throws IOException, UnsupportedAudioFileException
     {
         Song nextSong;
-
-        if (songs.contains(currentSong))
-        {
-            currentList = songs;
-        } 
-        else if (songsByPlaylistId.contains(currentSong))
-        {
-            currentList = songsByPlaylistId;
-        } 
-        else
-        {
-            //return (Song) songs.get(0);
-            currentList = null;
-        }
-
-
+        
         if (previousNextOrRepeat.equals("next"))
         {
             if (currentIndex != currentList.size() - 1)
@@ -570,7 +576,24 @@ public class Model extends Observable
         List<Song> songList = null;
 
         songList = mMgr.search(query);
-
+        
+        String songPlayingInfo = songPlaying.getAllSongStringInfo();
+        
+        if(currentList == songs)
+        {
+            for (int i = 0; i < songList.size(); i++)
+            {
+                if (songList.get(i).getAllSongStringInfo().equals(songPlayingInfo))
+                {
+                    currentIndex = i;
+                    break;
+                }
+                else
+                {
+                   currentIndex = 0; 
+                }
+            }            
+        }
         return songList;
     }
     /**

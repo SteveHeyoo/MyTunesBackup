@@ -130,7 +130,6 @@ public class Song
     {
         return artist + " - " + title;
     }
-    
     /**
      * Returns the artist and the title in one string
      * @return 

@@ -217,7 +217,7 @@ public class MainController implements Initializable, Observer
             model.setCurrentListControl(currentControlList);
             model.playSong(currentSong);
             model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue() / 100);
-
+            model.setCurrentList(model.getAllSongs());
         }
 
     }
@@ -399,6 +399,8 @@ public class MainController implements Initializable, Observer
             model.setCurrentListControl(currentControlList);
             model.playSong(currentSong);
             model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue() / 100);
+            
+            model.setCurrentList(model.getAllSongsByPlaylistId());
         }
     }
     /**
@@ -419,6 +421,8 @@ public class MainController implements Initializable, Observer
             showAlert("IOException", ex.getMessage());
         }
         model.setSongs(searchResult);
+
+        tblSong.getSelectionModel().clearAndSelect(model.getCurrentIndex());
     }
     /**
      * The arrow button to move a song up in the list.
@@ -462,16 +466,21 @@ public class MainController implements Initializable, Observer
             model.setCurrentListControl(currentControlList);
             model.playSongButtonClick();
             model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue() / 100);
+            
 
             try
             {
                 ListView<Song> playlist = (ListView) currentControlList;
                 model.setIndex(playlist.getSelectionModel().getSelectedIndex());
+                
+                model.setCurrentList(model.getAllSongsByPlaylistId());
 
             } catch (ClassCastException c)
             {
                 TableView<Song> playlist = (TableView) currentControlList;
                 model.setIndex(playlist.getSelectionModel().getSelectedIndex());
+                
+                model.setCurrentList(model.getAllSongs());
 
             }
         }

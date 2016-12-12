@@ -88,6 +88,4 @@ public class Playlist
     {
         this.numberOfSongsInPlaylist = numberOfSongsInPlaylist;
     }
-   
-    
 }
