@@ -422,7 +422,8 @@ public class Model extends Observable
         } 
         else
         {
-            //currentList = null;
+            //return (Song) songs.get(0);
+            currentList = null;
         }
 
 
