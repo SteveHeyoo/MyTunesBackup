@@ -23,7 +23,7 @@ import mytunes.BE.Playlist;
 import mytunes.BE.Song;
 import mytunes.BLL.MusicManager;
 import mytunes.BLL.MyTunesPlayer;
-import mytunes.GUI.CONTROLLER.FXMLDocumentController;
+import mytunes.GUI.CONTROLLER.MainController;
 
 /**
  *
@@ -50,7 +50,10 @@ public class Model extends Observable
     private int currentIndex;
     private List<Song> songsCleared;
     private boolean repeatSong;
-
+    
+    /**
+     * Private constructor for our Singleton pattern
+     */
     private Model()
     {
         mMgr = new MusicManager();
@@ -61,7 +64,10 @@ public class Model extends Observable
         loadSongsAndPlaylists();
 
     }
-
+    /**
+     * A part of the Singleton pattern, to get our Model instance.
+     * @return Model
+     */
     public static Model getInstance()
     {
         if (INSTANCE == null)
@@ -70,14 +76,21 @@ public class Model extends Observable
         }
         return INSTANCE;
     }
-
+    /**
+     * Method to create a new song. Sends the File object to our Logic-layer, and returns a Song object.
+     * Adds the new Song object to our Collection.
+     * @param file MP3 file
+     * @throws IOException
+     * @throws UnsupportedAudioFileException 
+     */
     public void createNewSong(File file) throws IOException, UnsupportedAudioFileException
     {
-        Song song;
-        song = mMgr.addSong(file);
+        Song song = mMgr.addSong(file);
         songs.add(song);
     }
-
+    /**
+     * Getting all the playlists and songs into our Collections.
+     */
     private void loadSongsAndPlaylists()
     {
         try
@@ -154,12 +167,18 @@ public class Model extends Observable
     {
         return repeatSong;
     }
-
+    /**
+     * Sets the selected index (Part of the play-next-song method)
+     * @param selectedIndex 
+     */
     public void setSelectedIndex(int selectedIndex)
     {
         this.selectedIndex = selectedIndex;
     }
-
+    /**
+     * Gets the selected song index
+     * @return 
+     */
     public int gettSelectedPlaylistSongIndex()
     {
         return selectedIndex;
@@ -257,17 +276,15 @@ public class Model extends Observable
         if (playingSong == true)
         {
             timeline.stop();
-
         }
         songPlaying = song;
         playingSong = true;
 
         mTPlayer = new MyTunesPlayer(song.getFilePath());
         mTPlayer.getMediaPlayer().setAutoPlay(true);
+        //Notify our Observer (
         setChanged();
         notifyObservers();
-
-        //lastSongId = song.getId();
         lastSongIndex = currentIndex;
 
         ListView playlist = null;
@@ -275,19 +292,12 @@ public class Model extends Observable
         try
         {
             playlist = (ListView) currentListControl;
-            //playlist.getSelectionModel().clearAndSelect(currentList.indexOf(nextSong));
-            //currentIndex = playlist.getSelectionModel().getSelectedIndex();
-            //currentIndex = playlist.ge
-
-        } catch (ClassCastException c)
+        } 
+        catch (ClassCastException c)
         {
-            System.out.println("sdas");
+            MainController.showAlert("ClassCastException", c.getMessage());
         }
-
-        //index = currentList.indexOf(song);
         startDelay(song);
-        //currentIndex = playlist.getSelectionModel().getSelectedIndex();
-
     }
 
     /**
@@ -343,16 +353,13 @@ public class Model extends Observable
     {
         if (mTPlayer == null)
         {
-            //mTPlayer.getMediaPlayer().stop();
             timeline.stop();
-
             playNextSong("previous");
-        } else
+        } 
+        else
         {
             mTPlayer.getMediaPlayer().stop();
-
             timeline.stop();
-
             playNextSong("previous");
         }
     }
@@ -378,10 +385,12 @@ public class Model extends Observable
                 nextSong = getNextSongInCurrentList(songPlaying, "repeat");
             }
 
-        } catch (IOException ex)
+        } 
+        catch (IOException ex)
         {
             ex.printStackTrace();
-        } catch (UnsupportedAudioFileException ex)
+        } 
+        catch (UnsupportedAudioFileException ex)
         {
             ex.printStackTrace();
         }
@@ -389,21 +398,17 @@ public class Model extends Observable
         try
         {
             ListView<Song> playlist = (ListView) currentListControl;
-            //playlist.getSelectionModel().clearAndSelect(currentList.indexOf(nextSong));
             playlist.getSelectionModel().clearAndSelect(currentIndex);
 
         } catch (ClassCastException c)
         {
             TableView<Song> playlist = (TableView) currentListControl;
-            //playlist.getSelectionModel().clearAndSelect(currentList.indexOf(nextSong));
             playlist.getSelectionModel().clearAndSelect(currentIndex);
         }
         double vol = mTPlayer.getMediaPlayer().getVolume();
         playTheSong(nextSong);
 
-        mTPlayer.getMediaPlayer().setVolume(vol);
-
-        //runningDelay = false;      
+        mTPlayer.getMediaPlayer().setVolume(vol);   
     }
 
     /**
@@ -420,18 +425,16 @@ public class Model extends Observable
         if (songs.contains(currentSong))
         {
             currentList = songs;
-            System.out.println("List: all list");
-        } else if (songsByPlaylistId.contains(currentSong))
+        } 
+        else if (songsByPlaylistId.contains(currentSong))
         {
             currentList = songsByPlaylistId;
-            System.out.println("List: playlist list");
-        } else
+        } 
+        else
         {
             currentList = null;
-            System.out.println("ERROR no list found");
         }
 
-        System.out.println("index:" + currentIndex);
 
         if (previousNextOrRepeat.equals("next"))
         {
@@ -439,37 +442,51 @@ public class Model extends Observable
             {
                 nextSong = currentList.get(currentIndex + 1);
                 currentIndex = currentIndex + 1;
-            } else
+            } 
+            else
             {
                 nextSong = currentList.get(0);
                 currentIndex = 0;
             }
-        } else if (previousNextOrRepeat.equals("previous"))
+        } 
+        else if (previousNextOrRepeat.equals("previous"))
         {
             if (currentIndex != 0)
             {
                 nextSong = currentList.get(currentIndex - 1);
                 currentIndex = currentIndex - 1;
-            } else
+            } 
+            else
             {
                 nextSong = currentList.get(0);
                 currentIndex = 0;
             }
-        } else
+        } 
+        else
         {
             nextSong = currentSong;
         }
 
         return nextSong;
     }
-
+    /**
+     * Deletes the Song object from our collection, and passes the Song ID to our logic layer.
+     * @param song Song to delete
+     * @throws IOException 
+     */
     public void deleteSong(Song song) throws IOException
     {
 
         mMgr.deleteSong(song.getId());
         songs.remove(song);
     }
-
+    /**
+     * Method to create a new (empty) playlist, or Edit a already existing playlist.
+     * @param playlistToEdit Playlist object to edit
+     * @param playlistName String of our playlist name
+     * @throws IOException
+     * @throws UnsupportedAudioFileException 
+     */
     public void createNewPlaylist(Playlist playlistToEdit, String playlistName) throws IOException, UnsupportedAudioFileException
     {
         if (playlistToEdit == null)
@@ -485,17 +502,27 @@ public class Model extends Observable
         }
 
     }
-
+    /**
+     * Get all the playlists in a List.
+     * @return ObservableList Playlist objects
+     */
     public ObservableList<Playlist> getAllPlaylists()
     {
         return playlists;
     }
-
+    /**
+     * Get all Songs in a List.
+     * @return List Song
+     */
     public ObservableList<Song> getAllSongsByPlaylistId()
     {
         return songsByPlaylistId;
     }
-
+    /**
+     * Deletes a playlist from our Collection and passes the Playlist ID to our logic layer.
+     * @param playlist Playlist to delete
+     * @throws IOException 
+     */
     public void deletPlaylist(Playlist playlist) throws IOException
     {
         mMgr.deletePlaylist(playlist.getId());
@@ -504,27 +531,49 @@ public class Model extends Observable
         songsByPlaylistId.clear();
 
     }
-
+    /**
+     * Fills the Collection with the selected playlist ID.
+     * Gets all the Songs by playlist ID from our logic-layer.
+     * @param playlistId Playlist ID to get all the songs matching this playlist
+     * @throws UnsupportedAudioFileException
+     * @throws IOException 
+     */
     public void showPlaylistSongs(int playlistId) throws UnsupportedAudioFileException, IOException
 
     {
         songsByPlaylistId.clear();
         songsByPlaylistId.addAll(mMgr.getSongsByPlaylistId(playlistId));
     }
-
+    /** 
+     * Method to add a song to our playlist
+     * @param songToAdd Song object to add
+     * @param playlistToAddTo Playlist object the song should be added to.
+     * @throws UnsupportedAudioFileException
+     * @throws IOException 
+     */
     public void addSongToPlaylist(Song songToAdd, Playlist playlistToAddTo) throws UnsupportedAudioFileException, IOException
 
     {
-
-        //  songsByPlaylistId.add(songToAdd);
+        //Sends only the ID on the song and playlist to our logic-layer.
         mMgr.addSongToPlaylist(songToAdd.getId(), playlistToAddTo.getId());
+        
+        //+1 to our value NumberOfSongsInPlaylist integer.
         playlistToAddTo.setNumberOfSongsInPlaylist(+1);
+        
+        //Load all the playlists again.
         playlists.clear();
         playlists.addAll(mMgr.getAllPlayLists());
+        
+        //Calls the method to show the songs in our playlist
         showPlaylistSongs(playlistToAddTo.getId());
 
     }
-
+    /**
+     * Method to filter songs
+     * @param query Search string to filter our songs with
+     * @return A List of songs with the met parameter.
+     * @throws IOException 
+     */
     public List<Song> filterSongs(String query) throws IOException
     {
         List<Song> songList = null;
@@ -533,13 +582,20 @@ public class Model extends Observable
 
         return songList;
     }
-
+    /**
+     * Method to set our Song objects in our Songs collection.
+     * @param songList 
+     */
     public void setSongs(List<Song> songList)
     {
         songs.clear();
         songs.addAll(songList);
     }
-
+    /**
+     * Method to move our selected song a index up.
+     * @param songToMoveUp Song object to swap a index up in our collection.
+     * @return 
+     */
     public int moveSongUp(Song songToMoveUp)
     {
         int indexId = songsByPlaylistId.indexOf(songToMoveUp);
@@ -555,7 +611,11 @@ public class Model extends Observable
         return indexId;
 
     }
-
+    /**
+     * Method to move a song down in our Collection.
+     * @param songToMoveDown Song object to move down in our collection.
+     * @return 
+     */
     public int moveSongDown(Song songToMoveDown)
     {
         int indexId = songsByPlaylistId.indexOf(songToMoveDown);
@@ -569,61 +629,78 @@ public class Model extends Observable
         }
         return indexId;
     }
-
-    private void setVolume()
-    {
-        mTPlayer.getMediaPlayer().setVolume(lastSongId);
-    }
-
-    public void setVolume(double d)
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+    /**
+     * Method to edit the selected song
+     * @param songToEdit Song to edit
+     * @param fileSong File object where our song is stored.
+     * @throws IOException
+     * @throws UnsupportedAudioFileException 
+     */
     public void editSong(Song songToEdit, File fileSong) throws IOException, UnsupportedAudioFileException
     {
+        //Pulls out the selected Song object from our collection and stores it.
         Song songSong = (Song) songs.get(songs.indexOf(songToEdit));
+        //Give it a new artist from our parameter
         songSong.setArtist(songToEdit.getArtist());
+        //Give it a new title from our parameter
         songSong.setTitle(songToEdit.getTitle());
+        //If we have picked a new File destination it sets the filepath to our new filepath.
         if (fileSong != null)
         {
             songSong.setFilePath(fileSong.getAbsolutePath());
         }
-
+        //passes the song from our collection down to our logic-layer
         mMgr.saveEditedSong(songSong);
+        //Updates the songs collection
         songs.clear();
         songs.addAll(mMgr.getAllSongs());
 
     }
-
+    /**
+     * Gets the MyTunesPlayer object.
+     * @return MyTunesPlayer
+     */
     public MyTunesPlayer getmTPlayer()
     {
         return mTPlayer;
     }
-
+    /**
+     * Method to delete a song from our playlist.
+     * @param song Selected Song object to delete
+     * @param playList Playlist from wich our song should be deleted from.
+     * @throws IOException
+     * @throws UnsupportedAudioFileException 
+     */
     public void deleteSongInPlaylist(Song song, Playlist playList) throws IOException, UnsupportedAudioFileException
     {
+        //Passes the Song ID and playlist ID to our logic-layer
         mMgr.deleteSongInPlayList(song.getId(), playList.getId());
+        //Removes the song from our collection by playlist ID.
         songsByPlaylistId.remove(song);
 
-        //mMgr.addSongToPlaylist(songToAdd.getId(), playlistToAddTo.getId());
+        //Corrects the number of songs in playlist
         playList.setNumberOfSongsInPlaylist(-1);
+        //Updates the view.
         playlists.clear();
         playlists.addAll(mMgr.getAllPlayLists());
         showPlaylistSongs(playList.getId());
-
-        //mMgr.
     }
-
+    /**
+     * Method to seek our song, where in the durationbar we click with our mouse.
+     * @param mouseClickedWidth Where we click on the duration (Divived value with the progressbar-width)
+     */
     public void seekSong(double mouseClickedWidth)
     {
+        //Makes a new Duration variable
         Duration newDuration = mTPlayer.getMediaPlayer().getTotalDuration().multiply(mouseClickedWidth);
+        //Play the song from our new duration
         mTPlayer.getMediaPlayer().seek(newDuration);
+        //Stops the timeline for our next song to play
         timeline.stop();
-        
+        //Defining a new duration to pass to our Timeline.
         Duration totalTime = mTPlayer.getMediaPlayer().getTotalDuration();
         Duration timeLeft = totalTime.subtract(newDuration);
-        
+        //Sets it with the new duration.
         timeline = new Timeline(new KeyFrame(Duration.millis((timeLeft.toMillis())), ae -> playNextSong("next")));
         timeline.play();
     }

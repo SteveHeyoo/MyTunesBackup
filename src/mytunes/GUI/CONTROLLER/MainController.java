@@ -55,7 +55,7 @@ import mytunes.GUI.MODEL.Model;
  *
  * @author Bo
  */
-public class FXMLDocumentController implements Initializable, Observer
+public class MainController implements Initializable, Observer
 {
 
     private Model model;
@@ -95,8 +95,12 @@ public class FXMLDocumentController implements Initializable, Observer
     private Label lblDuration;
     @FXML
     private JFXProgressBar progressbarDuration;
-
-    public FXMLDocumentController()
+    
+    /**
+     * Contructor of controller
+     * Sets this controller as observer for our model.
+     */
+    public MainController()
     {
         model = Model.getInstance();
         model.addObserver(this);
@@ -109,7 +113,10 @@ public class FXMLDocumentController implements Initializable, Observer
         dataBind();
 
     }
-
+    /**
+     * Databind our columns to our Song and Playlists using Lambda expressions.
+     * Adds a event listener to our volume slider.
+     */
     private void dataBind()
     {
         //I define the mapping of the table's columns to the objects that are added to it.
@@ -133,30 +140,13 @@ public class FXMLDocumentController implements Initializable, Observer
                     }
         });
     }
-
+    /**
+     * Using the JFileChooser to choose wich files to be added to our songs table.
+     * @param event 
+     */
     @FXML
     private void handleNewSong(ActionEvent event)
     {
-        /*
-        FileChooser fileChooser = new FileChooser();
-        FileChooser.ExtensionFilter mp3Filter = new FileChooser.ExtensionFilter("MP3 Files(*.mp3)", "*.mp3");
-        fileChooser.getExtensionFilters().add(mp3Filter);
-        File file = fileChooser.showOpenDialog(null);
-
-        if (file != null)
-        {
-            try
-            {
-                model.createNewSong(file);
-            } catch (IOException iOEx)
-            {
-                showAlert("IOException", iOEx.getMessage());
-            } catch (UnsupportedAudioFileException ex)
-            {
-                showAlert("UnsupportedAudioFileException", ex.getMessage());
-            }
-        }*/
-
         JFileChooser chooser = new JFileChooser();
         chooser.setMultiSelectionEnabled(true);
         FileNameExtensionFilter filter = new FileNameExtensionFilter("MP3 Files(*.mp3)", "mp3");
@@ -183,7 +173,11 @@ public class FXMLDocumentController implements Initializable, Observer
 
         }
     }
-
+    /**
+     * Loads the view to edit our selected Song.
+     * @param song
+     * @throws IOException 
+     */
     private void loadSongDataView(Song song) throws IOException
     {
         // Fetches primary stage and gets loader and loads FXML file to Parent
@@ -207,7 +201,10 @@ public class FXMLDocumentController implements Initializable, Observer
 
         stageSongEdit.show();
     }
-
+    /**
+     * Handles the mouse event of the All-songs table
+     * @param event 
+     */
     @FXML
     private void handleTblViewMouseClick(MouseEvent event)
     {
@@ -220,12 +217,14 @@ public class FXMLDocumentController implements Initializable, Observer
             model.setCurrentListControl(currentControlList);
             model.playSong(currentSong);
             model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue() / 100);
-            //  mediaBinding();
 
         }
 
     }
-
+    /**
+     * Handles the delete button on our all-songs table.
+     * @param event 
+     */
     @FXML
     private void handleTblViewSongsDelete(ActionEvent event)
     {
@@ -256,14 +255,21 @@ public class FXMLDocumentController implements Initializable, Observer
             showAlert("IOException", ex.getMessage());
         }
     }
-
+    /**
+     * Handles the new button in the Playlist table.
+     * @param event
+     * @throws IOException 
+     */
     @FXML
     private void handleNewPlaylist(ActionEvent event) throws IOException
     {
         showNewEditPlaylistDialog(null);
 
     }
-
+    /**
+     * Handles the delete button in the playlist table.
+     * @param event 
+     */
     @FXML
     private void handleDeletePlayList(ActionEvent event)
     {
@@ -293,7 +299,10 @@ public class FXMLDocumentController implements Initializable, Observer
             showAlert("IOException", ex.getMessage());
         }
     }
-
+    /**
+     * Handles the edit button in all-songs table.
+     * @param event 
+     */
     @FXML
     private void handleSongEdit(ActionEvent event)
     {
@@ -306,10 +315,13 @@ public class FXMLDocumentController implements Initializable, Observer
             }
         } catch (IOException ex)
         {
-            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    /**
+     * Handles the click event to show songs on the seleceted playlist.
+     * @param event 
+     */
     @FXML
     private void handleShowPlaylistSongs(MouseEvent event)
     {
@@ -344,7 +356,10 @@ public class FXMLDocumentController implements Initializable, Observer
             }
         }
     }
-
+    /**
+     * Handles the "add" button, wich adds a song to the selected playlist.
+     * @param event 
+     */
     @FXML
     private void handleAddSongToPlaylist(ActionEvent event)
     {
@@ -368,7 +383,10 @@ public class FXMLDocumentController implements Initializable, Observer
         }
         tblPlaylist.getSelectionModel().clearAndSelect(plIndexNum);
     }
-
+    /**
+     * Handles the mouse event on our Listview. The view that displays songs on a selected playlist.
+     * @param event 
+     */
     @FXML
     private void handleSongsOnPlaylistPlay(MouseEvent event)
     {
@@ -381,11 +399,12 @@ public class FXMLDocumentController implements Initializable, Observer
             model.setCurrentListControl(currentControlList);
             model.playSong(currentSong);
             model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue() / 100);
-
-            //currentControlList = listPlaylistSong;
         }
     }
-
+    /**
+     * Our well selected method-name, to handle the search function. Or filter songs.
+     * @param event 
+     */
     @FXML
     private void handleSearch3(KeyEvent event)
     {
@@ -401,9 +420,11 @@ public class FXMLDocumentController implements Initializable, Observer
         }
         model.setSongs(searchResult);
     }
-
+    /**
+     * The arrow button to move a song up in the list.
+     * @param event 
+     */
     @FXML
-
     private void handleMoveSongUp(ActionEvent event)
     {
         Song songToMoveUp = listPlaylistSong.getSelectionModel().getSelectedItem();
@@ -414,7 +435,10 @@ public class FXMLDocumentController implements Initializable, Observer
 
         }
     }
-
+    /**
+     * The arrow button to move a song down in the list.
+     * @param event 
+     */
     @FXML
     private void handleMoveSongDown(ActionEvent event)
     {
@@ -426,7 +450,10 @@ public class FXMLDocumentController implements Initializable, Observer
             listPlaylistSong.getSelectionModel().clearAndSelect(model.moveSongDown(songToMoveDown) + 1);
         }
     }
-
+    /**
+     * Handles the play/pause button.
+     * @param event 
+     */
     @FXML
     private void handlePlayButton(ActionEvent event)
     {
@@ -448,22 +475,25 @@ public class FXMLDocumentController implements Initializable, Observer
 
             }
         }
-
-        //btnPlaySong.setText("Pause");
     }
-
+    /**
+     * Method to show a new view, to either save a new playlist, or save a edited playlist.
+     * @param playlist
+     * @throws IOException 
+     */
     private void showNewEditPlaylistDialog(Playlist playlist) throws IOException
     {
         // TODO Display the New/Edit gui to enter a name to the new playlist
         Stage primStage = (Stage) tblSong.getScene().getWindow();
 
-        //mvc pattern til fxml sti
+        //mvc pattern to fxml path
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/mytunes/GUI/VIEW/NewEditPlaylistView.fxml"));
 
         Parent root = loader.load();
 
-        //Fethes controller from patient view
+        //Fethes controller
         NewEditPlaylistViewController newEditController = loader.getController();
+        //Here we decide if it is a new or a already existing playlist to edit.
         if (playlist != null)
         {
             newEditController.setPlaylistToEdit(playlist);
@@ -479,7 +509,11 @@ public class FXMLDocumentController implements Initializable, Observer
 
         stageNewEditPlaylist.show();
     }
-
+    /**
+     * Button to edit a playlist
+     * @param event
+     * @throws IOException 
+     */
     @FXML
     private void handleEditPlaylist(ActionEvent event) throws IOException
     {
@@ -490,7 +524,11 @@ public class FXMLDocumentController implements Initializable, Observer
         }
 
     }
-
+    /**
+     * Static method to show the exception dialog.
+     * @param header
+     * @param body 
+     */
     public static void showAlert(String header, String body)
     {
         Alert alert = new Alert(AlertType.WARNING);
@@ -500,7 +538,10 @@ public class FXMLDocumentController implements Initializable, Observer
 
         alert.showAndWait();
     }
-
+    /**
+     * Next button.
+     * @param event 
+     */
     @FXML
     private void handlePlayNextSong(ActionEvent event)
     {
@@ -512,7 +553,10 @@ public class FXMLDocumentController implements Initializable, Observer
         }
 
     }
-
+    /**
+     * Previous button
+     * @param event 
+     */
     @FXML
     private void handlePlayPreviousSong(ActionEvent event)
     {
@@ -523,12 +567,9 @@ public class FXMLDocumentController implements Initializable, Observer
         }
 
     }
-
-    private void handleRadioReapetSong(ActionEvent event)
-    {
-        model.setRepeatSong(!model.getRepeatSong());
-    }
-
+    /**
+     * Method to show current time status of the song, and show how long the song is played in the progressbar.
+     */
     private void bindPlayerToGUI()
     {
         // Binds the currentTimeProperty to a StringProperty on the label
@@ -580,12 +621,10 @@ public class FXMLDocumentController implements Initializable, Observer
             }
         });
     }
-
-    private void handleDragDropFiles(DragEvent event)
-    {
-        System.out.println("Drag&Dropped a item!");
-    }
-
+    /**
+     * Button to delete a song in the listview
+     * @param event 
+     */
     @FXML
     private void handleDeleteSongInPlaylist(ActionEvent event)
     {
@@ -600,28 +639,38 @@ public class FXMLDocumentController implements Initializable, Observer
             model.deleteSongInPlaylist(listPlaylistSong.getSelectionModel().getSelectedItem(), tblPlaylist.getSelectionModel().getSelectedItem());
         } catch (IOException ex)
         {
-            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (UnsupportedAudioFileException ex)
         {
-            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
         tblPlaylist.getSelectionModel().clearAndSelect(plIndexNum);
         listPlaylistSong.getSelectionModel().clearAndSelect(selectedSongIndex);
     }
-
+    /**
+     * Radio button.
+     * @param event 
+     */
     @FXML
     private void handleRadioRepeatSong(ActionEvent event)
     {
         model.setRepeatSong(!model.getRepeatSong());
     }
-
+    /**
+     * The method that is called when the NotifyObservers() is called in the Model.
+     * @param o
+     * @param arg 
+     */
     @Override
     public void update(Observable o, Object arg)
     {
         bindPlayerToGUI();
 
     }
-
+    /**
+     * Drag&Drop function.
+     * @param event 
+     */
     @FXML
     private void handleDragDropped(DragEvent event)
     {
@@ -647,7 +696,10 @@ public class FXMLDocumentController implements Initializable, Observer
         event.setDropCompleted(success);
         event.consume();
     }
-
+    /**
+     * Drag&Drop function.
+     * @param event 
+     */
     @FXML
     private void handleDragOver(DragEvent event)
     {
@@ -660,7 +712,10 @@ public class FXMLDocumentController implements Initializable, Observer
             event.consume();
         }
     }
-
+    /**
+     * Mouse event to handle the seek duration
+     * @param event 
+     */
     @FXML
     private void handleSeekDurationDragged(MouseEvent event)
     {
@@ -669,7 +724,10 @@ public class FXMLDocumentController implements Initializable, Observer
 
         model.seekSong((mouseClickedWidth / progressbarWidth));
     }
-
+    /**
+     * Mouse event to handle the seek duration.
+     * @param event 
+     */
     @FXML
     private void handleSeekDurationPressed(MouseEvent event)
     {
@@ -677,16 +735,5 @@ public class FXMLDocumentController implements Initializable, Observer
         double progressbarWidth = progressbarDuration.getWidth();
 
         model.seekSong((mouseClickedWidth / progressbarWidth));
-    }
-
-    public void showConfirmationWarning(String header, String body)
-    {
-        Alert alert = new Alert(AlertType.CONFIRMATION);
-        alert.setTitle("Delete confirmation");
-        alert.setHeaderText(header);
-        alert.setContentText(body);
-
-        alert.showAndWait();
-
     }
 }

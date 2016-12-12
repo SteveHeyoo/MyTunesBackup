@@ -23,7 +23,7 @@ public class MyTunes extends Application
     @Override
     public void start(Stage stage) throws Exception
     {
-        Parent root = FXMLLoader.load(getClass().getResource("VIEW/FXMLDocument.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("VIEW/MainView.fxml"));
 
         Scene scene = new Scene(root);
 

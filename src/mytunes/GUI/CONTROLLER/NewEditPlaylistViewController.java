@@ -21,7 +21,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import mytunes.BE.Playlist;
-import static mytunes.GUI.CONTROLLER.FXMLDocumentController.showAlert;
+import static mytunes.GUI.CONTROLLER.MainController.showAlert;
 import mytunes.GUI.MODEL.Model;
 
 /**
