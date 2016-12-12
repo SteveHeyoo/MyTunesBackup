@@ -29,6 +29,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -228,12 +229,27 @@ public class FXMLDocumentController implements Initializable, Observer
     @FXML
     private void handleTblViewSongsDelete(ActionEvent event)
     {
+
         Song song = tblSong.getSelectionModel().getSelectedItem();
         try
         {
             if (song != null)
             {
-                model.deleteSong(song);
+
+                Alert alert = new Alert(AlertType.CONFIRMATION);
+                alert.setTitle("Delete confirmation");
+                alert.setHeaderText("Confirm removing");
+                alert.setContentText("You really really want to delete: " + song.toString() + "?");
+
+                alert.showAndWait();
+
+                if (alert.getResult() == ButtonType.OK)
+                {
+                    model.deleteSong(song);
+                } else
+                {
+                    return;
+                }
             }
         } catch (IOException ex)
         {
@@ -256,7 +272,20 @@ public class FXMLDocumentController implements Initializable, Observer
         {
             if (playlist != null)
             {
+                Alert alert = new Alert(AlertType.CONFIRMATION);
+                alert.setTitle("Delete confirmation");
+                alert.setHeaderText("Confirm removing");
+                alert.setContentText("You really really want to delete: " + playlist.getName() + "?");
+
+                alert.showAndWait();
+                if (alert.getResult() == ButtonType.OK)
+                {
                 model.deletPlaylist(playlist);
+                }
+                else
+                {
+                    return;
+                }
             }
 
         } catch (IOException ex)
@@ -648,5 +677,16 @@ public class FXMLDocumentController implements Initializable, Observer
         double progressbarWidth = progressbarDuration.getWidth();
 
         model.seekSong((mouseClickedWidth / progressbarWidth));
+    }
+
+    public void showConfirmationWarning(String header, String body)
+    {
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Delete confirmation");
+        alert.setHeaderText(header);
+        alert.setContentText(body);
+
+        alert.showAndWait();
+
     }
 }
