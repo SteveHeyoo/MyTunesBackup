@@ -161,7 +161,7 @@ public class FXMLDocumentController implements Initializable, Observer
         FileNameExtensionFilter filter = new FileNameExtensionFilter("MP3 Files(*.mp3)", "mp3");
         chooser.setFileFilter(filter);
         chooser.showOpenDialog(null);
-        
+
         File[] files = chooser.getSelectedFiles();
 
         if (files != null)
@@ -594,16 +594,6 @@ public class FXMLDocumentController implements Initializable, Observer
     }
 
     @FXML
-    private void handleSeekDuration(MouseEvent event)
-    {
-        double mouseClickedWidth = event.getX();
-        double progressbarWidth = progressbarDuration.getWidth();
-
-        model.seekSong((mouseClickedWidth / progressbarWidth));
-
-    }
-
-    @FXML
     private void handleDragDropped(DragEvent event)
     {
         Dragboard db = event.getDragboard();
@@ -634,14 +624,29 @@ public class FXMLDocumentController implements Initializable, Observer
     {
         Dragboard db = event.getDragboard();
         if (db.hasFiles())
-            {
-                event.acceptTransferModes(TransferMode.COPY);
-            } 
-            else
-                {
-                    event.consume();
-                }
+        {
+            event.acceptTransferModes(TransferMode.COPY);
+        } else
+        {
+            event.consume();
+        }
+    }
+
+    @FXML
+    private void handleSeekDurationDragged(MouseEvent event)
+    {
+        double mouseClickedWidth = event.getX();
+        double progressbarWidth = progressbarDuration.getWidth();
+
+        model.seekSong((mouseClickedWidth / progressbarWidth));
+    }
+
+    @FXML
+    private void handleSeekDurationPressed(MouseEvent event)
+    {
+        double mouseClickedWidth = event.getX();
+        double progressbarWidth = progressbarDuration.getWidth();
+
+        model.seekSong((mouseClickedWidth / progressbarWidth));
     }
 }
-
-
