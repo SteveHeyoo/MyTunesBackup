@@ -287,16 +287,6 @@ public class Model extends Observable
         notifyObservers();
         lastSongIndex = currentIndex;
 
-        ListView playlist = null;
-
-        try
-        {
-            playlist = (ListView) currentListControl;
-        } 
-        catch (ClassCastException c)
-        {
-            MainController.showAlert("ClassCastException", c.getMessage());
-        }
         startDelay(song);
     }
 
@@ -432,7 +422,7 @@ public class Model extends Observable
         } 
         else
         {
-            currentList = null;
+            //currentList = null;
         }
 
 
