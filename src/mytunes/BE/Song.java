@@ -28,7 +28,6 @@ public class Song
      * @param filePath
      * @param duration 
      */
-
     public Song(int id, String artist, String title, String filePath, double duration)
     {
         this.id = id;
@@ -141,11 +140,19 @@ public class Song
         return artist + " " + title;
     }
 
+    /**
+     * Sets the filePath of the song.
+     * @param filePath 
+     */
     public void setFilePath(String filePath)
     {
         this.filePath = filePath;
     }
 
+    /**
+     * Sets the duration of the song.
+     * @param duration 
+     */
     public void setDuration(double duration)
     {
         this.duration = duration;

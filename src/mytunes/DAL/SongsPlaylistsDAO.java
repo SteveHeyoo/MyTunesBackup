@@ -37,7 +37,14 @@ public class SongsPlaylistsDAO
     public SongsPlaylistsDAO()
     {
     }
-
+    /**
+     * This method reads the contents of the mp3 file given from the "file" parameter, writes the contents in our
+     * songs.dat file. Creates and returns a song object with the read content.
+     * @param file
+     * @return
+     * @throws IOException
+     * @throws UnsupportedAudioFileException 
+     */
     public Song addSong(File file) throws IOException, UnsupportedAudioFileException
     {
         int nextId;
@@ -55,7 +62,6 @@ public class SongsPlaylistsDAO
             raff.seek(raff.length() - 128);
             raff.read(tagByte);
             tag = new String(tagByte).trim();
-            //System.out.println("Tag:" + tag);
             raff.read(titleByte);
 
             if (tag.equals("TAG"))
@@ -182,6 +188,11 @@ public class SongsPlaylistsDAO
         return new Song(id, artist, title, filePath, duration);
     }
 
+    /**
+     * Returns a list with all playlists saved in our playlists.dat file.
+     * @return
+     * @throws IOException 
+     */
     public List<Playlist> getAllPlayLists() throws IOException
     {
         try (RandomAccessFile raf = new RandomAccessFile(new File(FILE_PATH_PLAYLISTS), "rw"))
@@ -200,6 +211,12 @@ public class SongsPlaylistsDAO
         }
     }
 
+    /**
+     * Returns one playlist depending on where the "raf cursor" currently is in the playlists.dat file 
+     * @param raf
+     * @return
+     * @throws IOException 
+     */
     private Playlist getOnePlaylist(final RandomAccessFile raf) throws IOException
     {
         byte[] nameBytes = new byte[NAME_SIZE];
@@ -270,6 +287,12 @@ public class SongsPlaylistsDAO
         }
     }
 
+    /**
+     * Creates a new playlist and returns it as a Playlist object.
+     * @param playlistName
+     * @return
+     * @throws IOException 
+     */
     public Playlist createNewPlaylist(String playlistName) throws IOException
     {
         int playlistId;
@@ -292,7 +315,12 @@ public class SongsPlaylistsDAO
         return new Playlist(playlistId, playlistName);
 
     }
-
+    
+    /**
+     * Updates the name of a playlist 
+     * @param playlistToEdit
+     * @throws IOException 
+     */
     public void editPlaylistName(Playlist playlistToEdit) throws IOException
     {
         try (RandomAccessFile raf = new RandomAccessFile(new File(FILE_PATH_PLAYLISTS), "rw"))
@@ -311,7 +339,13 @@ public class SongsPlaylistsDAO
 
         }
     }
-
+    
+    /**
+     * Updates the information of a song 
+     * @param songToSave
+     * @throws IOException
+     * @throws UnsupportedAudioFileException 
+     */
     public void editSong(Song songToSave) throws IOException, UnsupportedAudioFileException
     {
         try (RandomAccessFile raf = new RandomAccessFile(new File(FILE_PATH_SONGS), "rw"))

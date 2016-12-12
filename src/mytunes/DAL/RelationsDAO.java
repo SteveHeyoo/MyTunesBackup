@@ -22,6 +22,13 @@ public class RelationsDAO
     private static final int WRITE_SIZE = (ID_SIZE * 2);
     private static final String FILE_PATH_RELATIONS = "Relations.dat";
 
+    
+    /**
+     * Checks the given playlist id and returns a list of the id's of the songs the playlist contains .
+     * @param playlistID
+     * @return
+     * @throws IOException 
+     */
     public List<Integer> getSongIdByPlaylistId(int playlistID) throws IOException
     {
         List<Integer> songIds = new ArrayList<>();
@@ -44,7 +51,12 @@ public class RelationsDAO
         }
 
     }
-
+    /**
+     * Writes a new relation between a playlist and a song in the Relations.dat file.
+     * @param songId
+     * @param playlistId
+     * @throws IOException 
+     */
     public void addSongToPlaylist(int songId, int playlistId) throws IOException
     {
         try (RandomAccessFile raf = new RandomAccessFile(new File(FILE_PATH_RELATIONS), "rw"))
@@ -54,17 +66,18 @@ public class RelationsDAO
             raf.writeInt(songId);
         }
     }
-
+    
+    /**
+     * Deletes a relation between a playlist and a song in the Relations.dat file.
+     * @param songId
+     * @param playListId
+     * @throws IOException 
+     */
     public void deleteSongInPlayList(int songId, int playListId) throws IOException
     {
         try (RandomAccessFile raf = new RandomAccessFile(new File(FILE_PATH_RELATIONS), "rw"))
         {
-            //int indexInBytes = (selectedPlaylistSongIndex)* WRITE_SIZE;        
-            //System.out.println(indexInBytes);
-            
-            //raf.seek(indexInBytes);
-            
-            
+                       
             for (int i = 0; i < raf.length(); i += WRITE_SIZE)
             {
                 System.out.println("1");

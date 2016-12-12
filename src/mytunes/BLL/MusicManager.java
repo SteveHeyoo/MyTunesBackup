@@ -29,25 +29,37 @@ public class MusicManager
     private SongsPlaylistsDAO sPlDAO;
     private RelationsDAO rDAO;
 
+    
     public MusicManager()
     {
         sPlDAO = new SongsPlaylistsDAO();
         rDAO = new RelationsDAO();
     }
 
+    /**
+     * Adds a new song. Takes a mp3 file, and returns the song added as a Song object
+     * @param file
+     * @return
+     * @throws IOException
+     * @throws UnsupportedAudioFileException 
+     */
     public Song addSong(File file) throws IOException, UnsupportedAudioFileException
     {
         return sPlDAO.addSong(file);
     }
 
+    /**
+     * Returns a list of all songs
+     * @return
+     * @throws IOException 
+     */
     public List<Song> getAllSongs() throws IOException
     {
         return sPlDAO.getAllSongs();
     }
 
     /**
-     * Calls the removeSongById in the songDAO class
-     *
+     * Takes a song id and removes the song with that id
      * @param id
      * @throws IOException
      */
@@ -56,11 +68,23 @@ public class MusicManager
         sPlDAO.removeSongById(id);
     }
 
+    /**
+     * Takes a name(String) and creates a playlist with that name
+     * @param playlistName
+     * @return
+     * @throws IOException 
+     */
     public Playlist createNewPlaylist(String playlistName) throws IOException
     {
         return sPlDAO.createNewPlaylist(playlistName);
     }
 
+    /**
+     * Returns a list of all playlists. Updates the durations of all playlists.
+     * @return
+     * @throws IOException
+     * @throws UnsupportedAudioFileException 
+     */
     public List<Playlist> getAllPlayLists() throws IOException, UnsupportedAudioFileException
     {
         List<Playlist> playlists = sPlDAO.getAllPlayLists();
@@ -98,6 +122,13 @@ public class MusicManager
         sPlDAO.removePlayListById(id);
     }
 
+    /**
+     * Takes a playlist id(Int). Returns all songs that are connected to that playlist id.
+     * @param playlistId
+     * @return
+     * @throws IOException
+     * @throws UnsupportedAudioFileException 
+     */
     public List<Song> getSongsByPlaylistId(int playlistId) throws IOException, UnsupportedAudioFileException
     {
         List<Song> returnList = new ArrayList<>();
@@ -118,27 +149,12 @@ public class MusicManager
                         Song newSong;
                         String filePath = song.getFilePath();
                         File file = new File(filePath);
-                        //newSong = sPlDAO.addSong(file);
-                        //returnList.add(newSong);
-                        //System.out.println(song.getAllSongStringInfo());
                         returnList.add(song);
-                    } else
+                    } 
+                    else
                     {
                         returnList.add(song);
                     }
-
-                    /*
-                    for (Song songInReturnList : returnList)
-                    {
-                        if (returnList.size() != 0)
-                        {
-                            if (returnList.contains(song))
-                            {
-                                //System.out.println(songInReturnList.getAllSongStringInfo());
-                            }
-                        }
-                        //duplicate.
-                    }*/
                 }
             }
         }
@@ -147,43 +163,78 @@ public class MusicManager
 
     }
 
+    /**
+     * Checks the given playlist id and returns a list of the id's of the songs the playlist contains.
+     * @param playlistId
+     * @return
+     * @throws IOException 
+     */
     public List<Integer> getSongIdByPlaylistId(int playlistId) throws IOException
     {
         return rDAO.getSongIdByPlaylistId(playlistId);
     }
     
+    /**
+     * Writes a new relation between a playlist and a song in the Relations.dat file.
+     * @param songId
+     * @param playlistId
+     * @throws IOException 
+     */
     public void addSongToPlaylist(int songId, int playlistId) throws IOException
     {
         rDAO.addSongToPlaylist(songId, playlistId);
-
     }
 
+    /**
+     * Takes a query(String) and returns a list of the songs which contains the query in their song information.
+     * @param query
+     * @return
+     * @throws FileNotFoundException
+     * @throws IOException 
+     */
     public List<Song> search(String query) throws FileNotFoundException, IOException
     {
-        List<Song> allWords = getAllSongs();
+        List<Song> allSongs = getAllSongs();
         List<Song> searchList = new ArrayList<>();
 
-        for (int i = 0; i < allWords.size(); i++)
+        for (int i = 0; i < allSongs.size(); i++)
         {
-            if (allWords.get(i).getAllSongStringInfo().toLowerCase().contains(query.toLowerCase()))
+            if (allSongs.get(i).getAllSongStringInfo().toLowerCase().contains(query.toLowerCase()))
             {
-                searchList.add(allWords.get(i));
+                searchList.add(allSongs.get(i));
             }
         }
 
         return searchList;
     }
 
+    /**
+     * Updates the given playlists name
+     * @param playlistToEdit
+     * @throws IOException 
+     */
     public void editPlaylistName(Playlist playlistToEdit) throws IOException
     {
         sPlDAO.editPlaylistName(playlistToEdit);
     }
 
+    /**
+     * Updates the given songs information
+     * @param songSong
+     * @throws IOException
+     * @throws UnsupportedAudioFileException 
+     */
     public void saveEditedSong(Song songSong) throws IOException, UnsupportedAudioFileException
     {
         sPlDAO.editSong(songSong);
     }
 
+    /**
+     * Removes a relation between a song and a playlist.
+     * @param songId
+     * @param playListId
+     * @throws IOException 
+     */
     public void deleteSongInPlayList(int songId, int playListId) throws IOException
     {
         rDAO.deleteSongInPlayList(songId,playListId);

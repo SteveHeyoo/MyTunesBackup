@@ -32,29 +32,31 @@ public class MyTunesPlayer
         
     }
     
+    /**
+     * Returns the mediaplayer
+     * @return 
+     */
     public MediaPlayer getMediaPlayer()
     {
         return mediaPlayer;
     }
     
+    /**
+     * Sets the isPaused boolean
+     * @param value 
+     */
     public void setPause(boolean value)
     {
         isPaused = value;
     }
     
+    /**
+     * Returns the isPaused boolean
+     * @return 
+     */
     public boolean isPaused()
     {
         return isPaused;
-    }
-    
-    public void setIsPlaying(boolean value)
-    {
-        isPlayingBoolean = value;
-    }
-    
-    public boolean isPlaying()
-    {
-        return isPlayingBoolean;
     }
 }
 
