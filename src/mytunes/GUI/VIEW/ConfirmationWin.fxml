@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="133.0" prefWidth="490.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.60">
+   <children>
+      <ImageView fitHeight="144.0" fitWidth="490.0" pickOnBounds="true">
+         <image>
+            <Image url="@BG_GUI.png" />
+         </image>
+      </ImageView>
+      <JFXButton layoutX="172.0" layoutY="80.0" prefWidth="65.0" ripplerFill="RED" text="Yes" textFill="WHITE" />
+      <Text fill="WHITE" layoutX="48.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Are you sure you want to delete this?">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Text>
+      <JFXButton layoutX="252.0" layoutY="80.0" prefWidth="65.0" ripplerFill="RED" text="No" textFill="WHITE" />
+   </children>
+</AnchorPane>
