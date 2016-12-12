@@ -22,6 +22,7 @@ import javafx.beans.binding.StringBinding;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -31,9 +32,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -41,9 +44,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -59,9 +62,9 @@ import mytunes.GUI.MODEL.Model;
  */
 public class MainController implements Initializable, Observer
 {
-    
+
     private Model model;
-    
+
     @FXML
     private TableView<Playlist> tblPlaylist;
     @FXML
@@ -70,7 +73,7 @@ public class MainController implements Initializable, Observer
     private TableColumn<Playlist, Integer> columnPlaylistNumberOfSongs;
     @FXML
     private TableColumn<Playlist, String> columnPlaylistTotalDuration;
-    
+
     @FXML
     private TableView<Song> tblSong;
     @FXML
@@ -81,16 +84,16 @@ public class MainController implements Initializable, Observer
     private TableColumn<Song, String> columnTime;
     @FXML
     private TableColumn<?, ?> columnCategory;
-    
+
     @FXML
     private ListView<Song> listPlaylistSong;
-    
+
     @FXML
     private TextField txtFieldSearch;
-    
+
     @FXML
     private Slider volumeSlide;
-    
+
     private Song currentSong;
     private Control currentControlList;
     @FXML
@@ -110,13 +113,14 @@ public class MainController implements Initializable, Observer
         model = Model.getInstance();
         model.addObserver(this);
     }
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
         volumeSlide.setValue(100);
         dataBind();
-        
+        bindContextMenu();
+
     }
 
     /**
@@ -136,7 +140,7 @@ public class MainController implements Initializable, Observer
         tblSong.setItems(model.getAllSongs());
         tblPlaylist.setItems(model.getAllPlaylists());
         listPlaylistSong.setItems(model.getAllSongsByPlaylistId());
-        
+
         volumeSlide.valueProperty().addListener((javafx.beans.Observable observable)
                 -> 
                 {
@@ -144,6 +148,36 @@ public class MainController implements Initializable, Observer
                     {
                         model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue() / 100);
                     }
+        });
+
+    }
+    /**
+     * Binds a context menu with an Add and Edit option, to our tableview with all songs.
+     */
+    private void bindContextMenu()
+    {
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem addTo = new MenuItem("Add to selected playlist");
+        MenuItem edit = new MenuItem("Edit");
+        contextMenu.getItems().addAll(addTo, edit);
+        
+        tblSong.setContextMenu(contextMenu);
+
+        addTo.setOnAction(new EventHandler<ActionEvent>()
+        {
+            @Override
+            public void handle(ActionEvent event)
+            {
+                handleAddSongToPlaylist(event);
+            }
+        });
+        edit.setOnAction(new EventHandler<ActionEvent>()
+        {
+            @Override
+            public void handle(ActionEvent event)
+            {
+                handleSongEdit(event);
+            }
         });
     }
 
@@ -161,9 +195,9 @@ public class MainController implements Initializable, Observer
         FileNameExtensionFilter filter = new FileNameExtensionFilter("MP3 Files(*.mp3)", "mp3");
         chooser.setFileFilter(filter);
         chooser.showOpenDialog(null);
-        
+
         File[] files = chooser.getSelectedFiles();
-        
+
         if (files != null)
         {
             for (int i = 0; i < files.length; i++)
@@ -179,7 +213,7 @@ public class MainController implements Initializable, Observer
                     showAlert("UnsupportedAudioFileException", ex.getMessage());
                 }
             }
-            
+
         }
     }
 
@@ -200,16 +234,16 @@ public class MainController implements Initializable, Observer
         // Fetches controller from patient view
         SongEditController songEditController
                 = loader.getController();
-        
+
         songEditController.setSong(song);
 
         // Sets new stage as modal window
         Stage stageSongEdit = new Stage();
         stageSongEdit.setScene(new Scene(root));
-        
+
         stageSongEdit.initModality(Modality.WINDOW_MODAL);
         stageSongEdit.initOwner(primStage);
-        
+
         stageSongEdit.show();
     }
 
@@ -232,7 +266,12 @@ public class MainController implements Initializable, Observer
             model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue() / 100);
             model.setCurrentList(model.getAllSongs());
         }
-        
+        if (event.getButton() == MouseButton.SECONDARY && currentSong != null)
+        {
+
+            tblSong.getContextMenu().show(tblSong, event.getSceneX(), event.getSceneY());
+        }
+
     }
 
     /**
@@ -243,20 +282,20 @@ public class MainController implements Initializable, Observer
     @FXML
     private void handleTblViewSongsDelete(ActionEvent event)
     {
-        
+
         Song song = tblSong.getSelectionModel().getSelectedItem();
         try
         {
             if (song != null)
             {
-                
+
                 Alert alert = new Alert(AlertType.CONFIRMATION);
                 alert.setTitle("Delete confirmation");
                 alert.setHeaderText("Confirm removing");
                 alert.setContentText("You really really want to delete: " + song.toString() + "?");
-                
+
                 alert.showAndWait();
-                
+
                 if (alert.getResult() == ButtonType.OK)
                 {
                     model.deleteSong(song);
@@ -281,7 +320,7 @@ public class MainController implements Initializable, Observer
     private void handleNewPlaylist(ActionEvent event) throws IOException
     {
         showNewEditPlaylistDialog(null);
-        
+
     }
 
     /**
@@ -301,7 +340,7 @@ public class MainController implements Initializable, Observer
                 alert.setTitle("Delete confirmation");
                 alert.setHeaderText("Confirm removing");
                 alert.setContentText("You really really want to delete: " + playlist.getName() + "?");
-                
+
                 alert.showAndWait();
                 if (alert.getResult() == ButtonType.OK)
                 {
@@ -311,7 +350,7 @@ public class MainController implements Initializable, Observer
                     return;
                 }
             }
-            
+
         } catch (IOException ex)
         {
             showAlert("IOException", ex.getMessage());
@@ -348,7 +387,7 @@ public class MainController implements Initializable, Observer
     private void handleShowPlaylistSongs(MouseEvent event)
     {
         Playlist playlist = tblPlaylist.getSelectionModel().getSelectedItem();
-        
+
         if (playlist != null)
         {
             int playlistId = playlist.getId();
@@ -356,7 +395,7 @@ public class MainController implements Initializable, Observer
             {
                 model.setCurrentPlaylist(playlist);
                 model.showPlaylistSongs(playlistId);
-                
+
             } catch (IOException ex)
             {
                 showAlert("IOException", ex.getMessage());
@@ -364,9 +403,9 @@ public class MainController implements Initializable, Observer
             {
                 showAlert("UnsupportedAudioFileException", ex.getMessage());
             }
-            
+
         }
-        
+
         if (event.getClickCount() == 2 && playlist != null)
         {
             try
@@ -390,12 +429,12 @@ public class MainController implements Initializable, Observer
         Song songToAdd = tblSong.getSelectionModel().getSelectedItem();
         Playlist playlistToAddTo = tblPlaylist.getSelectionModel().getSelectedItem();
         int plIndexNum = tblPlaylist.getSelectionModel().getSelectedIndex();
-        
+
         try
         {
             if (songToAdd != null && playlistToAddTo != null)
             {
-                
+
                 model.addSongToPlaylist(songToAdd, playlistToAddTo);
             }
         } catch (IOException ex)
@@ -426,7 +465,7 @@ public class MainController implements Initializable, Observer
             model.setCurrentListControl(currentControlList);
             model.playSong(currentSong);
             model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue() / 100);
-            
+
             model.setCurrentList(model.getAllSongsByPlaylistId());
         }
     }
@@ -441,7 +480,7 @@ public class MainController implements Initializable, Observer
     private void handleSearch3(KeyEvent event)
     {
         String query = txtFieldSearch.getText().trim();
-        
+
         List<Song> searchResult = null;
         try
         {
@@ -464,11 +503,11 @@ public class MainController implements Initializable, Observer
     private void handleMoveSongUp(ActionEvent event)
     {
         Song songToMoveUp = listPlaylistSong.getSelectionModel().getSelectedItem();
-        
+
         if (songToMoveUp != null)
         {
             listPlaylistSong.getSelectionModel().clearAndSelect(model.moveSongUp(songToMoveUp) - 1);
-            
+
         }
     }
 
@@ -482,7 +521,7 @@ public class MainController implements Initializable, Observer
     {
         Song songToMoveDown = listPlaylistSong.getSelectionModel().getSelectedItem();
         System.out.println(songToMoveDown);
-        
+
         if (songToMoveDown != null)
         {
             listPlaylistSong.getSelectionModel().clearAndSelect(model.moveSongDown(songToMoveDown) + 1);
@@ -502,15 +541,14 @@ public class MainController implements Initializable, Observer
             model.setCurrentListControl(currentControlList);
             model.playSongButtonClick();
             model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue() / 100);
-            
+
             try
             {
                 ListView<Song> playlist = (ListView) currentControlList;
-                model.setIndex(playlist.getSelectionModel().getSelectedIndex());                
+                model.setIndex(playlist.getSelectionModel().getSelectedIndex());
                 model.setCurrentList(model.getAllSongsByPlaylistId());
 
-            } 
-            catch (ClassCastException c)
+            } catch (ClassCastException c)
             {
                 TableView<Song> playlist = (TableView) currentControlList;
                 model.setIndex(playlist.getSelectionModel().getSelectedIndex());
@@ -533,7 +571,7 @@ public class MainController implements Initializable, Observer
 
         //mvc pattern to fxml path
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/mytunes/GUI/VIEW/NewEditPlaylistView.fxml"));
-        
+
         Parent root = loader.load();
 
         //Fethes controller
@@ -542,7 +580,7 @@ public class MainController implements Initializable, Observer
         if (playlist != null)
         {
             newEditController.setPlaylistToEdit(playlist);
-            
+
         }
 
         // sets new stage as modal window
@@ -551,7 +589,7 @@ public class MainController implements Initializable, Observer
         stageNewEditPlaylist.initModality(Modality.WINDOW_MODAL);
         stageNewEditPlaylist.initOwner(primStage);
         stageNewEditPlaylist.setResizable(false);
-        
+
         stageNewEditPlaylist.show();
     }
 
@@ -569,7 +607,7 @@ public class MainController implements Initializable, Observer
         {
             showNewEditPlaylistDialog(playlist);
         }
-        
+
     }
 
     /**
@@ -584,7 +622,7 @@ public class MainController implements Initializable, Observer
         alert.setTitle("Warning Dialog");
         alert.setHeaderText(header);
         alert.setContentText(body);
-        
+
         alert.showAndWait();
     }
 
@@ -600,9 +638,9 @@ public class MainController implements Initializable, Observer
         {
             model.pressNextButton();
             model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue() / 100);
-            
+
         }
-        
+
     }
 
     /**
@@ -618,7 +656,7 @@ public class MainController implements Initializable, Observer
             model.pressPreviousButton();
             model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue() / 100);
         }
-        
+
     }
 
     /**
@@ -641,11 +679,11 @@ public class MainController implements Initializable, Observer
                 // the currentTimeProperty
                 super.bind(model.getmTPlayer().getMediaPlayer().currentTimeProperty());
             }
-            
+
             @Override
             protected String computeValue()
             {
-                
+
                 String form = String.format("%d:%d",
                         TimeUnit.MILLISECONDS.toMinutes((long) model.getmTPlayer().getMediaPlayer().getCurrentTime().toMillis()),
                         TimeUnit.MILLISECONDS.toSeconds((long) model.getmTPlayer().getMediaPlayer().getCurrentTime().toMillis())
@@ -655,7 +693,7 @@ public class MainController implements Initializable, Observer
                                 )
                         )
                 );
-                
+
                 return form;
             }
         });
@@ -665,7 +703,7 @@ public class MainController implements Initializable, Observer
             {
                 super.bind(model.getmTPlayer().getMediaPlayer().currentTimeProperty());
             }
-            
+
             @Override
             protected String computeValue()
             {
@@ -678,11 +716,11 @@ public class MainController implements Initializable, Observer
                                 )
                         )
                 );
-                
+
                 return form;
             }
         });
-        
+
         progressbarDuration.progressProperty().bind(new ObjectBinding<Number>()
         {
             {
@@ -690,13 +728,13 @@ public class MainController implements Initializable, Observer
                 progressbarDuration.maxWidthProperty().set(model.getmTPlayer().getMediaPlayer().getTotalDuration().toMillis());
                 //  progressbarDuration.maxWidthProperty().set(model.getmTPlayer().getMediaPlayer().getTotalDuration().toMillis());
             }
-            
+
             @Override
             protected Number computeValue()
             {
-                
+
                 return (model.getmTPlayer().getMediaPlayer().getCurrentTime().toMillis() / model.getmTPlayer().getMediaPlayer().getTotalDuration().toMillis());
-                
+
             }
         });
         lblSongPlaying.setAlignment(Pos.CENTER);
@@ -705,7 +743,7 @@ public class MainController implements Initializable, Observer
             @Override
             protected String computeValue()
             {
-                return "("+model.getSongPlaying().toString()+")... Is playing";
+                return "(" + model.getSongPlaying().toString() + ")... Is playing";
             }
         });
     }
@@ -760,7 +798,7 @@ public class MainController implements Initializable, Observer
     public void update(Observable o, Object arg)
     {
         bindPlayerToGUI();
-        
+
     }
 
     /**
@@ -822,7 +860,7 @@ public class MainController implements Initializable, Observer
     {
         double mouseClickedWidth = event.getX();
         double progressbarWidth = progressbarDuration.getWidth();
-        
+
         model.seekSong((mouseClickedWidth / progressbarWidth));
     }
 
@@ -836,7 +874,7 @@ public class MainController implements Initializable, Observer
     {
         double mouseClickedWidth = event.getX();
         double progressbarWidth = progressbarDuration.getWidth();
-        
+
         model.seekSong((mouseClickedWidth / progressbarWidth));
     }
 }
