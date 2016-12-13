@@ -33,7 +33,7 @@
       <JFXButton layoutX="90.0" layoutY="608.0" onAction="#handleEditPlaylist" ripplerFill="RED" text="Edit" textFill="WHITE" />
       <JFXButton layoutX="155.0" layoutY="608.0" onAction="#handleDeletePlayList" ripplerFill="RED" text="Delete" textFill="WHITE" />
       <JFXButton layoutX="613.0" layoutY="60.0" onAction="#handlePlayNextSong" ripplerFill="RED" text="Next" textFill="WHITE" />
-      <JFXButton layoutX="435.0" layoutY="60.0" onAction="#handlePlayButton" ripplerFill="RED" text="Play" textFill="WHITE" />
+      <JFXButton layoutX="435.0" layoutY="60.0" onAction="#handlePlayButton" ripplerFill="RED" text="Pause" textFill="WHITE" />
       <JFXButton layoutX="256.0" layoutY="60.0" onAction="#handlePlayPreviousSong" ripplerFill="RED" text="Previous" textFill="WHITE" />
       <TableView fx:id="tblPlaylist" layoutX="25.0" layoutY="173.0" onMouseClicked="#handleShowPlaylistSongs" prefHeight="430.0" prefWidth="293.0">
         <columns>

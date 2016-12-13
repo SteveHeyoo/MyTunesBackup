@@ -540,7 +540,10 @@ public class MainController implements Initializable, Observer
         {
             model.setCurrentListControl(currentControlList);
             model.playSongButtonClick();
-            model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue() / 100);
+            if (model.getmTPlayer()!= null)
+            {
+                model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue() / 100);
+            }        
 
             try
             {

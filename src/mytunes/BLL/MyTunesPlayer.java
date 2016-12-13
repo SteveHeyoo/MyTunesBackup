@@ -19,8 +19,7 @@ public class MyTunesPlayer
     MediaPlayer mediaPlayer;
     File file;
     Media media;
-    
-    private boolean isPaused;
+
     private boolean isPlayingBoolean;
 
     public MyTunesPlayer(String filePath)
@@ -39,24 +38,6 @@ public class MyTunesPlayer
     public MediaPlayer getMediaPlayer()
     {
         return mediaPlayer;
-    }
-    
-    /**
-     * Sets the isPaused boolean
-     * @param value 
-     */
-    public void setPause(boolean value)
-    {
-        isPaused = value;
-    }
-    
-    /**
-     * Returns the isPaused boolean
-     * @return 
-     */
-    public boolean isPaused()
-    {
-        return isPaused;
     }
 }
 

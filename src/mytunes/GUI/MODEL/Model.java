@@ -17,6 +17,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.Control;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableView;
+import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import mytunes.BE.Playlist;
@@ -231,6 +232,37 @@ public class Model extends Observable
      */
     public void playSongButtonClick()
     {
+        
+        if (mTPlayer != null)
+        {
+            if (mTPlayer.getMediaPlayer().getStatus() == MediaPlayer.Status.PAUSED)
+                {
+                    //resume
+                    timeline.play();
+                    mTPlayer.getMediaPlayer().play();
+                    
+
+                } else //pause
+                {
+                    if (mTPlayer.getMediaPlayer().getCurrentTime().toMillis() < mTPlayer.getMediaPlayer().getCycleDuration().toMillis())
+                    {
+                        //mTPlayer.getMediaPlayer().setAutoPlay(false);
+                        //playTheSong(song);
+                        timeline.pause();
+                        mTPlayer.getMediaPlayer().pause();
+                        
+                        //Pause song            
+                    } else
+                    {
+                        //playTheSong(songToPlay);
+                    }
+                }
+        }
+        else
+        {
+            
+        }
+        /*
         Song songToPlay;
         try
         {
@@ -282,7 +314,7 @@ public class Model extends Observable
             //no song playing, and no song has been played before
             playTheSong(songToPlay);
 
-        }
+        }*/
     }
 
     /**
