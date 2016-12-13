@@ -5,6 +5,7 @@
  */
 package mytunes.GUI.CONTROLLER;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXProgressBar;
 import java.io.File;
 import java.io.IOException;
@@ -47,6 +48,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -104,6 +106,8 @@ public class MainController implements Initializable, Observer
     private Label lblTotalDuration;
     @FXML
     private Label lblSongPlaying;
+    @FXML
+    private JFXButton btnPlayPause;
 
     /**
      * Contructor of controller Sets this controller as observer for our model.
@@ -151,8 +155,10 @@ public class MainController implements Initializable, Observer
         });
 
     }
+
     /**
-     * Binds a context menu with an Add and Edit option, to our tableview with all songs.
+     * Binds a context menu with an Add and Edit option, to our tableview with
+     * all songs.
      */
     private void bindContextMenu()
     {
@@ -160,7 +166,7 @@ public class MainController implements Initializable, Observer
         MenuItem addTo = new MenuItem("Add to selected playlist");
         MenuItem edit = new MenuItem("Edit");
         contextMenu.getItems().addAll(addTo, edit);
-        
+
         tblSong.setContextMenu(contextMenu);
 
         addTo.setOnAction(new EventHandler<ActionEvent>()
@@ -540,10 +546,10 @@ public class MainController implements Initializable, Observer
         {
             model.setCurrentListControl(currentControlList);
             model.playSongButtonClick();
-            if (model.getmTPlayer()!= null)
+            if (model.getmTPlayer() != null)
             {
                 model.getmTPlayer().getMediaPlayer().setVolume(volumeSlide.getValue() / 100);
-            }        
+            }
 
             try
             {
@@ -747,6 +753,24 @@ public class MainController implements Initializable, Observer
             protected String computeValue()
             {
                 return "(" + model.getSongPlaying().toString() + ")... Is playing";
+            }
+        });
+        btnPlayPause.textProperty().bind(new StringBinding()
+        {
+                {
+                    super.bind(model.getmTPlayer().getMediaPlayer().statusProperty());
+                }
+            @Override
+            protected String computeValue()
+            {
+                if (model.getmTPlayer().getMediaPlayer().getStatus() == MediaPlayer.Status.PAUSED || model.getmTPlayer().getMediaPlayer().getStatus() == MediaPlayer.Status.READY || model.getmTPlayer().getMediaPlayer().getStatus() == MediaPlayer.Status.STOPPED)
+                {
+                    return "Play";
+                }
+                else
+                {
+                    return "Pause";
+                }
             }
         });
     }
