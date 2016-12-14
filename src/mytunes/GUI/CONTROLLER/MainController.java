@@ -115,7 +115,7 @@ public class MainController implements Initializable, Observer
     public MainController()
     {
         model = Model.getInstance();
-        model.addObserver(this);
+
     }
 
     @Override
@@ -124,7 +124,7 @@ public class MainController implements Initializable, Observer
         volumeSlide.setValue(100);
         dataBind();
         bindContextMenu();
-
+        model.addObserver(this);
     }
 
     /**
@@ -169,13 +169,15 @@ public class MainController implements Initializable, Observer
 
         tblSong.setContextMenu(contextMenu);
 
-        addTo.setOnAction((ActionEvent event) ->
-        {
-            handleAddSongToPlaylist(event);
+        addTo.setOnAction((ActionEvent event)
+                -> 
+                {
+                    handleAddSongToPlaylist(event);
         });
-        edit.setOnAction((ActionEvent event) ->
-        {
-            handleSongEdit(event);
+        edit.setOnAction((ActionEvent event)
+                -> 
+                {
+                    handleSongEdit(event);
         });
     }
 
@@ -519,7 +521,6 @@ public class MainController implements Initializable, Observer
     {
         Song songToMoveDown = listPlaylistSong.getSelectionModel().getSelectedItem();
 
-
         if (songToMoveDown != null)
         {
             listPlaylistSong.getSelectionModel().clearAndSelect(model.moveSongDown(songToMoveDown) + 1);
@@ -747,27 +748,26 @@ public class MainController implements Initializable, Observer
                 if (model.getmTPlayer().getMediaPlayer().getStatus() == MediaPlayer.Status.PLAYING)
                 {
                     return "";
-                }
-                else
+                } else
                 {
                     return "(" + model.getSongPlaying().toString() + ")... Is playing";
                 }
-                
+
             }
         });
         btnPlayPause.textProperty().bind(new StringBinding()
         {
-                {
-                    super.bind(model.getmTPlayer().getMediaPlayer().statusProperty());
-                }
+            {
+                super.bind(model.getmTPlayer().getMediaPlayer().statusProperty());
+            }
+
             @Override
             protected String computeValue()
             {
                 if (model.getmTPlayer().getMediaPlayer().getStatus() == MediaPlayer.Status.PAUSED || model.getmTPlayer().getMediaPlayer().getStatus() == MediaPlayer.Status.READY || model.getmTPlayer().getMediaPlayer().getStatus() == MediaPlayer.Status.STOPPED)
                 {
                     return "Play";
-                }
-                else
+                } else
                 {
                     return "Pause";
                 }
