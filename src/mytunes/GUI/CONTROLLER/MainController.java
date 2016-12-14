@@ -169,21 +169,13 @@ public class MainController implements Initializable, Observer
 
         tblSong.setContextMenu(contextMenu);
 
-        addTo.setOnAction(new EventHandler<ActionEvent>()
+        addTo.setOnAction((ActionEvent event) ->
         {
-            @Override
-            public void handle(ActionEvent event)
-            {
-                handleAddSongToPlaylist(event);
-            }
+            handleAddSongToPlaylist(event);
         });
-        edit.setOnAction(new EventHandler<ActionEvent>()
+        edit.setOnAction((ActionEvent event) ->
         {
-            @Override
-            public void handle(ActionEvent event)
-            {
-                handleSongEdit(event);
-            }
+            handleSongEdit(event);
         });
     }
 
@@ -526,7 +518,7 @@ public class MainController implements Initializable, Observer
     private void handleMoveSongDown(ActionEvent event)
     {
         Song songToMoveDown = listPlaylistSong.getSelectionModel().getSelectedItem();
-        System.out.println(songToMoveDown);
+
 
         if (songToMoveDown != null)
         {
@@ -752,7 +744,6 @@ public class MainController implements Initializable, Observer
             @Override
             protected String computeValue()
             {
-                System.out.println(model.getmTPlayer().getMediaPlayer().getStatus());
                 if (model.getmTPlayer().getMediaPlayer().getStatus() == MediaPlayer.Status.PLAYING)
                 {
                     return "";

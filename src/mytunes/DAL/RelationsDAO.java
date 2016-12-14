@@ -80,18 +80,16 @@ public class RelationsDAO
                        
             for (int i = 0; i < raf.length(); i += WRITE_SIZE)
             {
-                System.out.println("1");
+
                 raf.seek(i);
                 int readPlayListId = raf.readInt();
                 int readSongId = raf.readInt();
-                System.out.println(readPlayListId + " " + readSongId + " " + songId);
                 if (readPlayListId == playListId)
                 {
-                    System.out.println("2");
+
                     
                     if (readSongId == songId)
                     {
-                        System.out.println("3");
                         raf.seek(i);
                         byte[] overWriteBytes = new byte[WRITE_SIZE];
                         raf.write(overWriteBytes);
