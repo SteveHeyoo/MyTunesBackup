@@ -324,22 +324,29 @@ public class Model extends Observable
      */
     private void playTheSong(Song song)
     {
-
-        if (playingSong == true)
+        if (song != null)
         {
-            timeline.stop();
+            if (playingSong == true)
+            {
+                timeline.stop();
+            }
+            songPlaying = song;
+            playingSong = true;
+
+            mTPlayer = new MyTunesPlayer(song.getFilePath());
+            mTPlayer.getMediaPlayer().setAutoPlay(true);
+            //Notify our Observer (
+            setChanged();
+            notifyObservers();
+            lastSongIndex = currentIndex;
+
+            startDelay(song);
         }
-        songPlaying = song;
-        playingSong = true;
-
-        mTPlayer = new MyTunesPlayer(song.getFilePath());
-        mTPlayer.getMediaPlayer().setAutoPlay(true);
-        //Notify our Observer (
-        setChanged();
-        notifyObservers();
-        lastSongIndex = currentIndex;
-
-        startDelay(song);
+        else
+        {
+            return;
+        }
+        
     }
 
     /**
@@ -467,7 +474,15 @@ public class Model extends Observable
         
         if (previousNextOrRepeat.equals("next"))
         {
-            if (currentIndex != currentList.size() - 1)
+            if (currentList.size() == 0)
+            {
+                mTPlayer.getMediaPlayer().stop();
+                System.out.println("sasa");
+                setChanged();
+                notifyObservers();
+                return null;
+            }
+            else if (currentIndex != currentList.size() - 1)
             {
                 nextSong = currentList.get(currentIndex + 1);
                 currentIndex = currentIndex + 1;
