@@ -236,85 +236,26 @@ public class Model extends Observable
         if (mTPlayer != null)
         {
             if (mTPlayer.getMediaPlayer().getStatus() == MediaPlayer.Status.PAUSED)
-                {
-                    //resume
-                    timeline.play();
-                    mTPlayer.getMediaPlayer().play();
+            {
+                //resume
+                timeline.play();
+                mTPlayer.getMediaPlayer().play();
                     
 
-                } else //pause
+            } 
+            else //pause
+            {
+                if (mTPlayer.getMediaPlayer().getCurrentTime().toMillis() < mTPlayer.getMediaPlayer().getCycleDuration().toMillis())
                 {
-                    if (mTPlayer.getMediaPlayer().getCurrentTime().toMillis() < mTPlayer.getMediaPlayer().getCycleDuration().toMillis())
-                    {
-                        //mTPlayer.getMediaPlayer().setAutoPlay(false);
-                        //playTheSong(song);
-                        timeline.pause();
-                        mTPlayer.getMediaPlayer().pause();
+                    //mTPlayer.getMediaPlayer().setAutoPlay(false);
+                    //playTheSong(song);
+                    timeline.pause();
+                    mTPlayer.getMediaPlayer().pause();
                         
-                        //Pause song            
-                    } else
-                    {
-                        //playTheSong(songToPlay);
-                    }
+                    //Pause song            
                 }
-        }
-        else
-        {
-            
-        }
-        /*
-        Song songToPlay;
-        try
-        {
-            ListView<Song> playlist = (ListView) currentListControl;
-            songToPlay = playlist.getSelectionModel().getSelectedItem();
-        } catch (ClassCastException c)
-        {
-            TableView<Song> playlist = (TableView) currentListControl;
-            songToPlay = playlist.getSelectionModel().getSelectedItem();
-
-        }
-
-        if (mTPlayer != null)
-        {
-
-            if (currentIndex == lastSongIndex)
-            {
-                //it is the same song as the last. the song should pause/play
-                if (mTPlayer.isPaused())
-                {
-                    //resume
-                    timeline.play();
-                    mTPlayer.getMediaPlayer().play();
-                    mTPlayer.setPause(false);
-
-                } else //pause
-                {
-                    if (mTPlayer.getMediaPlayer().getCurrentTime().toMillis() < mTPlayer.getMediaPlayer().getCycleDuration().toMillis())
-                    {
-                        //mTPlayer.getMediaPlayer().setAutoPlay(false);
-                        //playTheSong(song);
-                        timeline.pause();
-                        mTPlayer.getMediaPlayer().pause();
-                        mTPlayer.setPause(true);
-                        //Pause song            
-                    } else
-                    {
-                        playTheSong(songToPlay);
-                    }
-                }
-            } else
-            {
-                //it is a new song. play the song
-                mTPlayer.getMediaPlayer().stop();
-                playTheSong(songToPlay);
             }
-        } else
-        {
-            //no song playing, and no song has been played before
-            playTheSong(songToPlay);
-
-        }*/
+        }
     }
 
     /**
@@ -470,29 +411,25 @@ public class Model extends Observable
      */
     public Song getNextSongInCurrentList(Song currentSong, String previousNextOrRepeat) throws IOException, UnsupportedAudioFileException
     {
-        Song nextSong;
+        Song nextSong = null;
         
-        if (previousNextOrRepeat.equals("next"))
+        
+        if (currentList.size() != 0)
         {
-            if (currentList.size() == 0)
+           if (previousNextOrRepeat.equals("next"))
             {
-                mTPlayer.getMediaPlayer().stop();
-                System.out.println("sasa");
-                setChanged();
-                notifyObservers();
-                return null;
-            }
-            else if (currentIndex != currentList.size() - 1)
-            {
-                nextSong = currentList.get(currentIndex + 1);
-                currentIndex = currentIndex + 1;
+                
+                if(currentIndex != currentList.size() - 1)
+                {
+                    nextSong = currentList.get(currentIndex + 1);
+                    currentIndex = currentIndex + 1;
+                } 
+                else
+                {
+                    nextSong = currentList.get(0);
+                    currentIndex = 0;
+                }
             } 
-            else
-            {
-                nextSong = currentList.get(0);
-                currentIndex = 0;
-            }
-        } 
         else if (previousNextOrRepeat.equals("previous"))
         {
             if (currentIndex != 0)
@@ -512,6 +449,16 @@ public class Model extends Observable
         }
 
         return nextSong;
+        }   
+        
+        else
+        {
+            mTPlayer.getMediaPlayer().stop();
+            setChanged();
+            notifyObservers();
+            return null;
+        }    
+        
     }
     /**
      * Deletes the Song object from our collection, and passes the Song ID to our logic layer.
