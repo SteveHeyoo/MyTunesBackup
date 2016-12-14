@@ -752,7 +752,16 @@ public class MainController implements Initializable, Observer
             @Override
             protected String computeValue()
             {
-                return "(" + model.getSongPlaying().toString() + ")... Is playing";
+                System.out.println(model.getmTPlayer().getMediaPlayer().getStatus());
+                if (model.getmTPlayer().getMediaPlayer().getStatus() == MediaPlayer.Status.PLAYING)
+                {
+                    return "";
+                }
+                else
+                {
+                    return "(" + model.getSongPlaying().toString() + ")... Is playing";
+                }
+                
             }
         });
         btnPlayPause.textProperty().bind(new StringBinding()
